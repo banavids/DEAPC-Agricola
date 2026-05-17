@@ -107,3 +107,314 @@ Operações de Campo (Operário Agrícola)
         Quero poder marcar as minhas tarefas como concluídas ou inserir notas simples (ex: "aplicado adubo") na minha produção atribuída,
 
         Para que o Gestor Agrícola saiba o progresso no campo em tempo real.
+
+
+        Adicionado para depois completar/unir informação
+
+        User stories
+
+        Sensores e Alertas
+US4.1: Alertas Automáticos
+
+Como Gestor Agrícola,
+
+Quero receber alertas quando a humidade do solo estiver abaixo do nível recomendado,
+
+Para que possa agir rapidamente e evitar danos na cultura.
+
+US4.2: Monitorização em Tempo Real
+
+Como Gestor Agrícola,
+
+Quero visualizar dados dos sensores em tempo real,
+
+Para que acompanhe as condições da produção continuamente.
+
+Automação
+US5.1: Rega Automática
+
+Como Gestor Agrícola,
+
+Quero que o sistema ative automaticamente a irrigação quando a humidade estiver baixa,
+
+Para reduzir intervenção manual.
+
+US5.2: Programação de Rega
+
+Como Gestor Agrícola,
+
+Quero definir horários automáticos para irrigação,
+
+Para otimizar o consumo de água.
+
+Segurança
+US6.1: Autenticação Segura
+
+Como Utilizador,
+
+Quero iniciar sessão com credenciais seguras,
+
+Para proteger os dados da plataforma.
+
+Histórico
+US7.1: Histórico de Sensores
+
+Como Gestor Agrícola,
+
+Quero consultar o histórico dos sensores,
+
+Para analisar padrões climáticos e produtividade.
+
+Wireframes
+
+1. Página de Login
+Objetivo
+
+Autenticação.
+
+Componentes
+email
+password
+botão login
+“esqueci password”
+Extras
+logo
+estado servidor MQTT/API
+2. Dashboard Principal
+
+A homepage depois do login.
+
+Admin Dashboard
+Cards
+utilizadores ativos
+produções ativas
+sensores online
+alertas críticos
+Gráficos
+consumo água
+temperatura média
+atividade do sistema
+Sidebar
+Utilizadores
+Produções
+Sensores
+Atuadores
+Logs
+Relatórios
+Configurações
+Gestor Dashboard
+
+Mais focado na quinta.
+
+Cards
+culturas ativas
+regas ativas
+sensores online
+alertas
+Tabelas
+tarefas pendentes
+últimas leituras
+Botões rápidos
+iniciar rega
+desligar bomba
+criar produção
+Operário Dashboard
+
+Mais simples.
+
+Mostrar
+tarefas atribuídas
+produção atual
+estado tarefas
+notas recentes
+3. Página de Produções Agrícolas
+
+Uma das mais importantes.
+
+Lista de Produções
+Mostrar
+nome produção
+cultura
+estado
+humidade
+temperatura
+operários associados
+Ações
+ver detalhes
+editar
+finalizar
+Detalhes da Produção
+Separar em secções
+Informações Gerais
+nome
+tipo cultura
+área
+data plantação
+Sensores
+humidade
+temperatura
+chuva
+luminosidade
+Irrigação
+estado bomba
+consumo água
+histórico rega
+Operários
+atribuídos
+tarefas
+Notas
+observações
+problemas
+fertilização
+4. Página de Sensores
+
+MUITO importante
+
+Lista de Sensores
+Mostrar
+nome sensor
+tipo
+estado online/offline
+último valor
+última atualização
+Página Detalhe Sensor
+Gráficos
+histórico tempo real
+médias
+alertas
+Informação
+localização
+tópico MQTT
+estado conexão
+5. Página de Atuadores
+Lista Atuadores
+Mostrar
+bomba água
+fertilização
+ventilação (simulado)
+Controlo Manual
+Botões
+ligar
+desligar
+automático/manual
+Logs do Atuador
+14:32 bomba ligada
+14:40 bomba desligada
+6. Página de Monitorização Live
+
+Esta vai impressionar MUITO.
+
+Dashboard Tempo Real
+Widgets
+gauge humidade
+gauge temperatura
+estado bomba
+sensores online
+Gráficos live
+séries temporais Grafana
+Alertas
+⚠ Humidade baixa
+⚠ Temperatura elevada
+7. Página MQTT / IoT
+
+Isto é MUITO diferenciador.
+
+Mostrar
+broker online
+dispositivos ligados
+tópicos MQTT
+mensagens recentes
+Exemplo visual
+farm/sensor/humidade
+22%
+
+farm/actuator/bomba
+ON
+8. Página de Relatórios
+Relatórios disponíveis
+Produção
+colheitas
+rendimento
+Água
+consumo diário
+consumo mensal
+Sensores
+médias
+alertas
+Exportação
+PDF
+CSV
+9. Página de Tarefas
+
+Muito útil para operários.
+
+Lista Tarefas
+Mostrar
+descrição
+prioridade
+estado
+produção associada
+Ações
+concluir
+adicionar nota
+10. Página de Utilizadores
+
+Admin only.
+
+Lista Utilizadores
+Mostrar
+nome
+email
+role
+estado
+Ações
+criar
+editar
+suspender
+apagar
+11. Página de Logs / Auditoria
+
+Admin.
+
+Mostrar
+Admin criou utilizador
+Gestor ativou bomba
+Operário concluiu tarefa
+Filtros
+utilizador
+data
+ação
+12. Página de Configurações
+Configurações Sistema
+MQTT
+IP broker
+tópicos
+Automação
+humidade mínima
+horários rega
+Notificações
+alertas email
+thresholds
+13. Página de Alertas
+
+Muito boa visualmente.
+
+Mostrar
+alertas ativos
+severidade
+origem
+Exemplos
+⚠ Sensor offline
+⚠ Humidade crítica
+⚠ Temperatura elevada
+14. Página Histórico
+Histórico Completo
+Dados:
+sensores
+regas
+fertilização
+tarefas
+Filtros
+período
+produção
+sensor
