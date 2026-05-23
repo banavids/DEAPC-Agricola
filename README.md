@@ -19,11 +19,11 @@ O projeto **DEAPC-Agricola** é uma plataforma de gestão e automação agrícol
 
 O sistema divide-se em três perfis de acesso, garantindo a segurança da plataforma e a estrita confidencialidade dos dados estratégicos da exploração agrícola.
 
-| Perfil | Descrição Geral | Escopo de Acesso |
-| :--- | :--- | :--- |
-| **Administrador (Admin)** | Gestão técnica da plataforma e infraestrutura. | Acesso total e irrestrito a todos os módulos e configurações. |
-| **Gestor Agrícola** | Planeamento, análise de dados e coordenação de equipas. | Visão global da quinta, relatórios, gestão de sensores e atuadores. |
-| **Operário Agrícola** | Execução de tarefas práticas no campo. | Restrito à produção e às tarefas que lhe foram explicitamente atribuídas. |
+| Perfil                    | Descrição Geral                                   | Escopo de Acesso |
+
+| **Administrador (Admin)** | Gestão técnica da plataforma e infraestrutura.    | Acesso total e irrestrito a todos os módulos e configurações. |
+| **Gestor Agrícola**       | Planeamento, análise de dados e coordenação.      | Visão global da quinta, relatórios, gestão de sensores e atuadores. |
+| **Operário Agrícola**     | Execução de tarefas práticas no campo.            | Restrito à produção e às tarefas que lhe foram explicitamente atribuídas. |
 
 ---
 
@@ -92,9 +92,9 @@ A aplicação está estruturada em 14 ecrãs/componentes lógicos, desenhados pa
 
 ---
 
-## 5. Arquitetura Técnica Sugerida
+## 5. Arquitetura Técnica
 
-* **Frontend:** Interface Web Responsiva (React.js / Vue.js) com gráficos dinâmicos integrados (Chart.js / ApexCharts).
-* **Backend:** API RESTful (Node.js / Python FastAPI / Java Spring Boot).
+* **Frontend:** Interface Web Responsivcom gráficos dinâmicos integrados.
+* **Backend:** API RESTful .
 * **Mensajaria/IoT:** Protocolo MQTT com Broker Eclipse Mosquitto.
-* **Base de Dados:** Relacional (PostgreSQL / MySQL) para entidades e dados operacionais. (Opcional: InfluxDB para armazenamento eficiente de séries temporais dos sensores).
+* **Base de Dados:** Relacional ( MySQL) para entidades e dados operacionais.
