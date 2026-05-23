@@ -3,44 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nome do Projeto - Início</title>
+    <title>FarmSmart OS - Autenticação</title>
 </head>
 <body>
 
-    <!-- Cabeçalho: Onde costuma estar o logótipo e a barra de navegação do Figma -->
-    <header>
-        <h1>Logótipo da App</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="login.html">Entrar</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Conteúdo Principal: Muda de página para página conforme o wireframe -->
     <main>
-        <section id="hero">
-            <h2>Bem-vindo à nossa Aplicação</h2>
-            <p>Esta é a frase de destaque ou proposta de valor que está no topo do vosso Figma.</p>
-            <button>Saber Mais</button>
+        
+        <header>
+            <div class="logo-icon">🌱</div>
+            <h1>FarmSmart <span>OS</span></h1>
+            <p>AUTENTICAÇÃO DO SISTEMA</p>
+        </header>
+
+        <section class="login-card">
+            
+            <form action="#" method="POST">
+                
+                <div class="form-group">
+                    <label for="username">UTILIZADOR / EMAIL</label>
+                    <input 
+                        type="email" 
+                        id="username" 
+                        name="username" 
+                        placeholder="admin@farmsmart.local" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">PASSWORD</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="••••••••" 
+                        required
+                    >
+                </div>
+
+                <div class="form-actions">
+                    <a href="recuperar.html">Recuperar acesso</a>
+                </div>
+
+                <button type="submit">
+                    <span>🔒</span> ENTRAR NO SISTEMA
+                </button>
+
+            </form>
+
+            <footer class="status-section">
+                <legend>STATUS</legend>
+                
+                <div class="status-container">
+                    <div class="status-card">
+                        <span class="icon">🖥️</span>
+                        <h3>SERVIDOR CORE</h3>
+                        <p class="online">• Online</p>
+                    </div>
+
+                    <div class="status-card">
+                        <span class="icon">📶</span>
+                        <h3>MQTT BROKER</h3>
+                        <p class="connected">• Conectado</p>
+                    </div>
+                </div>
+            </footer>
+
         </section>
 
-        <section id="features">
-            <h2>Funcionalidades Principais</h2>
-            <!-- Se o wireframe tiver colunas ou blocos de texto/imagem, estruturar aqui -->
-            <article>
-                <h3>Funcionalidade 1</h3>
-                <p>Descrição breve.</p>
-            </article>
-        </section>
     </main>
-
-    <!-- Rodapé: Links secundários, copyright, redes sociais -->
-    <footer>
-        <p>&copy; 2026 Projeto Web - Grupo X. Todos os direitos reservados.</p>
-    </footer>
 
 </body>
 </html>
