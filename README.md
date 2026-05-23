@@ -1,420 +1,100 @@
 # DEAPC-Agricola
-Projeto DEAPC - P43 - Agrícola
+> **Projeto DEAPC - P43 - Agrícola**  
+> Sistema de Monitorização, Automação de Rega e Gestão de Produções Agrícolas Baseado em IoT.
 
-1)
+---
 
-a) A aplicação tem como objetivo:
+## 1. Introdução e Objetivos
 
-- Receber informação em tempo real das condições atmosféricas.
-- Receber input de sensores para processamento de dados.
-- Automatizar o sistema de rega de uma produção.
+O projeto **DEAPC-Agricola** é uma plataforma de gestão e automação agrícola que integra tecnologias IoT (Internet of Things) para otimizar o consumo de recursos, monitorizar produções em tempo real e mitigar falhas no terreno.
 
-b) Perfis de Utilizador da aplicação:
+### Objetivos Principais
+* **Telemetria em Tempo Real:** Receber e processar continuamente informações das condições atmosféricas e dados enviados por sensores de campo.
+* **Automação Inteligente:** Automatizar o sistema de rega de uma produção com base em regras de negócio e limites (*thresholds*) de humidade predefinidos.
+* **Gestão Operacional:** Disponibilizar interfaces adaptadas para os diferentes níveis de responsabilidade e perfis de utilizador no terreno.
 
-- Admin 
-- Gestor Agrícola 
-- Operário Agrícola 
+---
 
-c) Funcionalidades para os diferentes utilizadores:
+## 2. Perfis de Utilizador e Matriz de Permissões
 
-Admin - Todos os privilégios
-Gestor Agrícola - Tem acesso a todas as produções
-Operário Agrícola - Ver informação de uma determinada produção 
+O sistema divide-se em três perfis de acesso, garantindo a segurança da plataforma e a estrita confidencialidade dos dados estratégicos da exploração agrícola.
 
-2)
-Administração do Sistema (Admin)
+| Perfil | Descrição Geral | Escopo de Acesso |
+| :--- | :--- | :--- |
+| **Administrador (Admin)** | Gestão técnica da plataforma e infraestrutura. | Acesso total e irrestrito a todos os módulos e configurações. |
+| **Gestor Agrícola** | Planeamento, análise de dados e coordenação de equipas. | Visão global da quinta, relatórios, gestão de sensores e atuadores. |
+| **Operário Agrícola** | Execução de tarefas práticas no campo. | Restrito à produção e às tarefas que lhe foram explicitamente atribuídas. |
 
-    US1.1: Acesso Total
+---
 
-        Como Administrador,
+## 3. Especificação de Requisitos (User Stories)
 
-        Quero ter acesso irrestrito a todos os módulos e funcionalidades do sistema,
+### Módulo 1: Administração do Sistema (Admin)
+* **US1.1 [Acesso Total]:** Como Administrador, quero ter acesso irrestrito a todos os módulos e funcionalidades do sistema, para que possa gerir a plataforma e resolver qualquer problema de configuração.
+* **US1.2 [Gestão de Utilizadores]:** Como Administrador, quero poder criar, editar, suspender e apagar contas de Gestores Agrícolas e Operários, para garantir que apenas pessoas autorizadas utilizam o software com as permissões corretas.
+* **US1.3 [Auditoria do Sistema]:** Como Administrador, quero visualizar um registo (*log*) de atividades de todos os utilizadores, para que possa monitorizar a segurança do sistema e identificar quem fez alterações importantes.
 
-        Para que possa gerir a plataforma e resolver qualquer problema de configuração.
+### Módulo 2: Gestão de Produções (Gestor Agrícola)
+* **US2.1 [Visão Global]:** Como Gestor Agrícola, quero visualizar uma lista ou painel (*dashboard*) com todas as produções agrícolas ativas na quinta, para que consiga monitorizar o estado geral das culturas.
+* **US2.2 [Gestão do Ciclo de Produção]:** Como Gestor Agrícola, quero criar, editar e finalizar produções agrícolas, para que o sistema reflita o planeamento real do campo.
+* **US2.3 [Alocação de Equipas]:** Como Gestor Agrícola, quero atribuir Operários Agrícolas a produções específicas, para que cada trabalhador saiba onde deve focar o seu esforço.
+* **US2.4 [Acesso a Relatórios]:** Como Gestor Agrícola, quero extrair dados consolidados de todas as produções (custos, colheitas, tempos), para que possa tomar decisões estratégicas para a próxima época.
 
-    US1.2: Gestão de Utilizadores
+### Módulo 3: Operações de Campo (Operário Agrícola)
+* **US3.1 [Acesso Restrito à sua Produção]:** Como Operário Agrícola, quero visualizar os detalhes e tarefas apenas da produção à qual fui atribuído, para que saiba exatamente o que fazer sem ser sobrecarregado com informação irrelevante de outros campos.
+* **US3.2 [Limitação de Confidencialidade]:** Como Operário Agrícola, quero ser bloqueado de aceder a dados financeiros ou ao painel geral de gestão, para que a confidencialidade dos dados estratégicos da quinta seja mantida.
+* **US3.3 [Registo de Progresso]:** Como Operário Agrícola, quero poder marcar as minhas tarefas como concluídas ou inserir notas simples (ex: "aplicado adubo") na minha produção atribuída, para que o Gestor Agrícola saiba o progresso no campo em tempo real.
 
-        Como Administrador,
+### Módulo 4: IoT, Sensores e Alertas
+* **US4.1 [Alertas Automáticos]:** Como Gestor Agrícola, quero receber alertas quando a humidade do solo estiver abaixo do nível recomendado, para que possa agir rapidamente e evitar danos na cultura.
+* **US4.2 [Monitorização em Tempo Real]:** Como Gestor Agrícola, quero visualizar dados dos sensores em tempo real, para que acompanhe as condições da produção continuamente.
+* **US7.1 [Histórico de Sensores]:** Como Gestor Agrícola, quero consultar o histórico dos sensores, para analisar padrões climáticos e produtividade.
 
-        Quero poder criar, editar, suspender e apagar contas de Gestores Agrícolas e Operários,
+### Módulo 5: Automação de Irrigação
+* **US5.1 [Rega Automática]:** Como Gestor Agrícola, quero que o sistema ative automaticamente a irrigação quando a humidade estiver baixa, para reduzir a intervenção manual.
+* **US5.2 [Programação de Rega]:** Como Gestor Agrícola, quero definir horários automáticos para irrigação, para otimizar o consumo de água.
 
-        Para que garanta que apenas pessoas autorizadas utilizam o software com as permissões corretas.
+### Módulo 6: Segurança e Transversalidade
+* **US6.1 [Autenticação Segura]:** Como Utilizador, quero iniciar sessão com credenciais seguras, para proteger os dados da plataforma.
 
-    US1.3: Auditoria do Sistema
+---
 
-        Como Administrador,
+## 4. Arquitetura de Informação e Interfaces (Wireframes)
 
-        Quero visualizar um registo (log) de atividades de todos os utilizadores,
+A aplicação está estruturada em 14 ecrãs/componentes lógicos, desenhados para responder de forma modular aos requisitos do projeto.
 
-        Para que possa monitorizar a segurança do sistema e identificar quem fez alterações importantes.
+### 4.1 Autenticação e Entrada
+* **1. Página de Login:** Formulário de autenticação (email/password), recuperação de palavra-passe e indicadores de estado técnicos (estado do servidor, API e Broker MQTT).
 
-Gestão de Produções (Gestor Agrícola)
+### 4.2 Dashboards Customizados
+* **2. Dashboard Principal:** A homepage adapta-se dinamicamente ao perfil que faz login:
+  * **Admin Dashboard:** Focado na saúde do sistema. Apresenta cartões de utilizadores ativos, sensores online, alertas críticos e gráficos de atividade/logs.
+  * **Gestor Dashboard:** Focado na operação. Apresenta cartões de culturas ativas, regas a decorrer, tarefas pendentes, últimas leituras e botões de ação rápida (iniciar rega, desligar bomba).
+  * **Operário Dashboard:** Focado na execução. Apresenta apenas as tarefas atribuídas, estado da produção atual e notas recentes.
 
-    US2.1: Visão Global
+### 4.3 Gestão de Produções e Trabalho
+* **3. Página de Produções Agrícolas:** Lista de todas as produções (cultura, estado, humidade, temperatura, operários associados). Contém uma **Vista Detalhada** dividida em secções: Informações Gerais, Dados de Sensores, Histórico de Irrigação, Operários Alocados e Notas de Campo (fertilização, observações).
+* **9. Página de Tarefas:** Listagem de ordens de trabalho para os operários com triagem por prioridade, estado e ações rápidas para concluir ou adicionar notas.
+* **10. Página de Utilizadores (Admin Only):** Interface CRUD para gestão de utilizadores (criar, editar, suspender, apagar).
 
-        Como Gestor Agrícola,
+### 4.4 Infraestrutura IoT e Telemetria
+* **4. Página de Sensores:** Listagem do hardware (tipo, estado online/offline, último valor recebido) e ecrã de detalhe com gráficos de médias e histórico.
+* **5. Página de Atuadores:** Controlo manual e automático de relés (bomba de água, fertilização, ventilação simulada) acompanhado por um histórico de acionamentos (*ex: 14:32 bomba ligada*).
+* **6. Página de Monitorização Live:** Painel dinâmico em tempo real enriquecido com *widgets* de ponteiro (*gauges* para humidade/temperatura) e gráficos de séries temporais.
+* **7. Página MQTT / IoT:** Consola de diagnóstico que exibe o estado do *broker*, os dispositivos ligados, os tópicos ativos e o fluxo das últimas mensagens (*ex: farm/sensor/humidade -> 22%*).
 
-        Quero visualizar uma lista ou painel (dashboard) com todas as produções agrícolas ativas na quinta,
+### 4.5 Dados, Logs e Configurações
+* **8. Página de Relatórios:** Módulo de inteligência de dados para exportação de dados consolidados (produção, consumo de água diário/mensal, alertas) em formatos estruturados (PDF/CSV).
+* **11. Página de Logs / Auditoria (Admin Only):** Histórico detalhado e imutável de ações executadas na plataforma com filtros por utilizador, data e ação.
+* **12. Página de Configurações:** Parametrização global do sistema (IP do Broker MQTT, thresholds de humidade mínima, agendamentos cronometrados de rega e alertas de email).
+* **13. Página de Alertas:** Central visual de notificações críticas (ex: *Sensor offline*, *Humidade crítica*), organizadas por severidade e origem.
+* **14. Página Histórico:** Motor de busca retroativo que unifica os dados passados de sensores, regas, fertilizações e tarefas num único local com filtros avançados.
 
-        Para que consiga monitorizar o estado geral das culturas.
+---
 
-    US2.2: Gestão do Ciclo de Produção
+## 5. Arquitetura Técnica Sugerida
 
-        Como Gestor Agrícola,
-
-        Quero criar, editar e finalizar produções agrícolas,
-
-        Para que o sistema reflita o planeamento real do campo.
-
-    US2.3: Alocação de Equipas
-
-        Como Gestor Agrícola,
-
-        Quero atribuir Operários Agrícolas a produções específicas,
-
-        Para que cada trabalhador saiba onde deve focar o seu esforço.
-
-    US2.4: Acesso a Relatórios
-
-        Como Gestor Agrícola,
-
-        Quero extrair dados consolidados de todas as produções (custos, colheitas, tempos),
-
-        Para que possa tomar decisões estratégicas para a próxima época.
-
-Operações de Campo (Operário Agrícola)
-
-    US3.1: Acesso Restrito à sua Produção
-
-        Como Operário Agrícola,
-
-        Quero visualizar os detalhes e tarefas apenas da produção à qual fui atribuído,
-
-        Para que saiba exatamente o que fazer sem ser sobrecarregado com informação irrelevante de outros campos.
-
-    US3.2: Limitação de Confidencialidade
-
-        Como Operário Agrícola,
-
-        Quero ser bloqueado de aceder a dados financeiros ou ao painel geral de gestão,
-
-        Para que a confidencialidade dos dados estratégicos da quinta seja mantida.
-
-    US3.3: Registo de Progresso (Opcional, mas recomendado)
-
-        Como Operário Agrícola,
-
-        Quero poder marcar as minhas tarefas como concluídas ou inserir notas simples (ex: "aplicado adubo") na minha produção atribuída,
-
-        Para que o Gestor Agrícola saiba o progresso no campo em tempo real.
-
-
-        Adicionado para depois completar/unir informação
-
-        User stories
-
-        Sensores e Alertas
-US4.1: Alertas Automáticos
-
-Como Gestor Agrícola,
-
-Quero receber alertas quando a humidade do solo estiver abaixo do nível recomendado,
-
-Para que possa agir rapidamente e evitar danos na cultura.
-
-US4.2: Monitorização em Tempo Real
-
-Como Gestor Agrícola,
-
-Quero visualizar dados dos sensores em tempo real,
-
-Para que acompanhe as condições da produção continuamente.
-
-Automação
-US5.1: Rega Automática
-
-Como Gestor Agrícola,
-
-Quero que o sistema ative automaticamente a irrigação quando a humidade estiver baixa,
-
-Para reduzir intervenção manual.
-
-US5.2: Programação de Rega
-
-Como Gestor Agrícola,
-
-Quero definir horários automáticos para irrigação,
-
-Para otimizar o consumo de água.
-
-Segurança
-US6.1: Autenticação Segura
-
-Como Utilizador,
-
-Quero iniciar sessão com credenciais seguras,
-
-Para proteger os dados da plataforma.
-
-Histórico
-US7.1: Histórico de Sensores
-
-Como Gestor Agrícola,
-
-Quero consultar o histórico dos sensores,
-
-Para analisar padrões climáticos e produtividade.
-
-Wireframes
-
-1. Página de Login
-Objetivo
-
-Autenticação.
-
-Componentes
-email
-password
-botão login
-“esqueci password”
-Extras
-logo
-estado servidor MQTT/API
-2. Dashboard Principal
-
-A homepage depois do login.
-
-Admin Dashboard
-Cards
-utilizadores ativos
-produções ativas
-sensores online
-alertas críticos
-Gráficos
-consumo água
-temperatura média
-atividade do sistema
-Sidebar
-Utilizadores
-Produções
-Sensores
-Atuadores
-Logs
-Relatórios
-Configurações
-Gestor Dashboard
-
-Mais focado na quinta.
-
-Cards
-culturas ativas
-regas ativas
-sensores online
-alertas
-Tabelas
-tarefas pendentes
-últimas leituras
-Botões rápidos
-iniciar rega
-desligar bomba
-criar produção
-Operário Dashboard
-
-Mais simples.
-
-Mostrar
-tarefas atribuídas
-produção atual
-estado tarefas
-notas recentes
-3. Página de Produções Agrícolas
-
-Uma das mais importantes.
-
-Lista de Produções
-Mostrar
-nome produção
-cultura
-estado
-humidade
-temperatura
-operários associados
-Ações
-ver detalhes
-editar
-finalizar
-Detalhes da Produção
-Separar em secções
-Informações Gerais
-nome
-tipo cultura
-área
-data plantação
-Sensores
-humidade
-temperatura
-chuva
-luminosidade
-Irrigação
-estado bomba
-consumo água
-histórico rega
-Operários
-atribuídos
-tarefas
-Notas
-observações
-problemas
-fertilização
-4. Página de Sensores
-
-MUITO importante
-
-Lista de Sensores
-Mostrar
-nome sensor
-tipo
-estado online/offline
-último valor
-última atualização
-Página Detalhe Sensor
-Gráficos
-histórico tempo real
-médias
-alertas
-Informação
-localização
-tópico MQTT
-estado conexão
-5. Página de Atuadores
-Lista Atuadores
-Mostrar
-bomba água
-fertilização
-ventilação (simulado)
-Controlo Manual
-Botões
-ligar
-desligar
-automático/manual
-Logs do Atuador
-14:32 bomba ligada
-14:40 bomba desligada
-6. Página de Monitorização Live
-
-Esta vai impressionar MUITO.
-
-Dashboard Tempo Real
-Widgets
-gauge humidade
-gauge temperatura
-estado bomba
-sensores online
-Gráficos live
-séries temporais Grafana
-Alertas
-⚠ Humidade baixa
-⚠ Temperatura elevada
-7. Página MQTT / IoT
-
-Isto é MUITO diferenciador.
-
-Mostrar
-broker online
-dispositivos ligados
-tópicos MQTT
-mensagens recentes
-Exemplo visual
-farm/sensor/humidade
-22%
-
-farm/actuator/bomba
-ON
-8. Página de Relatórios
-Relatórios disponíveis
-Produção
-colheitas
-rendimento
-Água
-consumo diário
-consumo mensal
-Sensores
-médias
-alertas
-Exportação
-PDF
-CSV
-9. Página de Tarefas
-
-Muito útil para operários.
-
-Lista Tarefas
-Mostrar
-descrição
-prioridade
-estado
-produção associada
-Ações
-concluir
-adicionar nota
-10. Página de Utilizadores
-
-Admin only.
-
-Lista Utilizadores
-Mostrar
-nome
-email
-role
-estado
-Ações
-criar
-editar
-suspender
-apagar
-11. Página de Logs / Auditoria
-
-Admin.
-
-Mostrar
-Admin criou utilizador
-Gestor ativou bomba
-Operário concluiu tarefa
-Filtros
-utilizador
-data
-ação
-12. Página de Configurações
-Configurações Sistema
-MQTT
-IP broker
-tópicos
-Automação
-humidade mínima
-horários rega
-Notificações
-alertas email
-thresholds
-13. Página de Alertas
-
-Muito boa visualmente.
-
-Mostrar
-alertas ativos
-severidade
-origem
-Exemplos
-⚠ Sensor offline
-⚠ Humidade crítica
-⚠ Temperatura elevada
-14. Página Histórico
-Histórico Completo
-Dados:
-sensores
-regas
-fertilização
-tarefas
-Filtros
-período
-produção
-sensor
+* **Frontend:** Interface Web Responsiva (React.js / Vue.js) com gráficos dinâmicos integrados (Chart.js / ApexCharts).
+* **Backend:** API RESTful (Node.js / Python FastAPI / Java Spring Boot).
+* **Mensajaria/IoT:** Protocolo MQTT com Broker Eclipse Mosquitto.
+* **Base de Dados:** Relacional (PostgreSQL / MySQL) para entidades e dados operacionais. (Opcional: InfluxDB para armazenamento eficiente de séries temporais dos sensores).
