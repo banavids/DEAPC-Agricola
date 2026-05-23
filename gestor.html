@@ -1,0 +1,101 @@
+<div class="dashboard-content">
+    
+    <div class="action-bar">
+        <div class="action-group-left">
+            <button class="btn btn-blue"><i class="fa-solid fa-play"></i> Iniciar Rega Manual</button>
+            <button class="btn btn-red-solid"><i class="fa-regular fa-square"></i> Desligar Bombas</button>
+        </div>
+        <div class="action-group-right">
+            <button class="btn btn-green"><i class="fa-solid fa-plus"></i> Nova Produção</button>
+        </div>
+    </div>
+
+    <div class="kpi-grid kpi-gestor">
+        <div class="card kpi-card">
+            <div class="kpi-info">
+                <span class="kpi-label">CULTURAS ATIVAS</span>
+                <span class="kpi-value">12</span>
+            </div>
+            <div class="kpi-icon icon-green"><i class="fa-solid fa-seedling"></i></div>
+        </div>
+        <div class="card kpi-card">
+            <div class="kpi-info">
+                <span class="kpi-label">REGAS ATIVAS</span>
+                <span class="kpi-value">3</span>
+            </div>
+            <div class="kpi-icon icon-blue"><i class="fa-solid fa-droplet"></i></div>
+        </div>
+        <div class="card kpi-card">
+            <div class="kpi-info">
+                <span class="kpi-label">SENSORES ONLINE</span>
+                <span class="kpi-value">145</span>
+            </div>
+            <div class="kpi-icon icon-purple"><i class="fa-solid fa-microchip"></i></div>
+        </div>
+        <div class="card kpi-card">
+            <div class="kpi-info">
+                <span class="kpi-label">ALERTAS</span>
+                <span class="kpi-value">2</span>
+            </div>
+            <div class="kpi-icon icon-red-solid"><i class="fa-solid fa-circle-exclamation"></i></div>
+        </div>
+    </div>
+
+    <div class="tables-grid">
+        <div class="card table-card">
+            <h3 class="card-title">Tarefas Pendentes</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tarefa</th>
+                        <th>Responsável</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Adubar setor A (Tomates)</td>
+                        <td>João Silva</td>
+                        <td><span class="status-badge badge-warning">Pendente</span></td>
+                    </tr>
+                    <tr>
+                        <td>Verificar bomba principal</td>
+                        <td>Maria Costa</td>
+                        <td><span class="status-badge badge-info">Em progresso</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card table-card">
+            <h3 class="card-title">Últimas Leituras de Sensores</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Local</th>
+                        <th>Humidade</th>
+                        <th>Temperatura</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Estufa 1 - Tomates</td>
+                        <td>65%</td>
+                        <td>24°C</td>
+                    </tr>
+                    <tr>
+                        <td>Setor B - Alfaces</td>
+                        <td class="text-danger">42% <i class="fa-solid fa-circle-info"></i></td>
+                        <td>22°C</td>
+                    </tr>
+                    <tr>
+                        <td>Setor C - Morangos</td>
+                        <td>71%</td>
+                        <td>21°C</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

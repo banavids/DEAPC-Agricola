@@ -1,0 +1,83 @@
+<div class="dashboard-content">
+    
+    <div class="page-header">
+        <h2 class="page-title">Atuadores</h2>
+    </div>
+
+    <div class="atuadores-layout">
+        
+        <div class="atuadores-list">
+            
+            <div class="light-card atuador-card">
+                <div class="atuador-icon active"><i class="fa-solid fa-power-off"></i></div>
+                <div class="atuador-info">
+                    <h3>Bomba Principal de Água</h3>
+                    <p>Casa das Máquinas • Bomba</p>
+                </div>
+                <div class="atuador-actions">
+                    <span class="mode-tag mode-auto"><i class="fa-solid fa-bolt"></i> Auto</span>
+                    <button class="btn-action btn-desligar">Desligar</button>
+                </div>
+            </div>
+
+            <div class="light-card atuador-card">
+                <div class="atuador-icon inactive"><i class="fa-solid fa-power-off"></i></div>
+                <div class="atuador-info">
+                    <h3>Injetor de Fertilizante A</h3>
+                    <p>Estufa 1 • Fertilização</p>
+                </div>
+                <div class="atuador-actions">
+                    <span class="mode-tag mode-manual"><i class="fa-solid fa-hand"></i> Manual</span>
+                    <button class="btn-action btn-ligar">Ligar</button>
+                </div>
+            </div>
+
+            <div class="light-card atuador-card">
+                <div class="atuador-icon active"><i class="fa-solid fa-power-off"></i></div>
+                <div class="atuador-info">
+                    <h3>Ventiladores Extratores</h3>
+                    <p>Ventilação</p>
+                </div>
+                <div class="atuador-actions">
+                    <span class="mode-tag mode-auto"><i class="fa-solid fa-bolt"></i> Auto</span>
+                    <button class="btn-action btn-desligar">Desligar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="light-card logs-panel">
+            <h3 class="logs-title"><i class="fa-solid fa-clock-rotate-left"></i> Logs de Atuadores (Hoje)</h3>
+            
+            <div class="log-timeline">
+                
+                <div class="log-item">
+                    <div class="log-time">14:40:05</div>
+                    <div class="log-details">
+                        <div class="log-main"><span class="tag-on">[ON]</span> Ventiladores Extratores</div>
+                        <div class="log-sub">Origem: Automação (Temp > 26°C)</div>
+                    </div>
+                </div>
+
+                <div class="log-item">
+                    <div class="log-time">14:32:10</div>
+                    <div class="log-details">
+                        <div class="log-main"><span class="tag-off">[OFF]</span> Bomba Principal de Água</div>
+                        <div class="log-sub">Origem: Manual (Admin)</div>
+                    </div>
+                </div>
+
+                <div class="log-item">
+                    <div class="log-time">10:00:00</div>
+                    <div class="log-details">
+                        <div class="log-main"><span class="tag-modo">[MODO]</span> Injetor de Fertilizante A</div>
+                        <div class="log-sub">Alterado para: Manual</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

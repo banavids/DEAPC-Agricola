@@ -1,0 +1,42 @@
+<div class="dashboard-content">
+    
+    <div class="live-header-bar">
+        <h2 class="page-title"><i class="fa-solid fa-bolt text-green"></i> Monitorização em Tempo Real</h2>
+        <div class="websocket-status">
+            <span class="status-dot green"></span> Conexão WebSocket Ativa
+        </div>
+    </div>
+
+    <div class="kpi-grid live-kpis">
+        <div class="card live-kpi-card">
+            <span class="live-label">HUMIDADE SOLO</span>
+            <span class="live-value text-blue">64.2%</span>
+        </div>
+        <div class="card live-kpi-card">
+            <span class="live-label">TEMPERATURA</span>
+            <span class="live-value text-orange">23.8°C</span>
+        </div>
+        <div class="card live-kpi-card">
+            <span class="live-label">LUMINOSIDADE</span>
+            <span class="live-value text-yellow">842 lx</span>
+        </div>
+        <div class="card live-kpi-card card-glow-green">
+            <span class="live-label">BOMBA PRINCIPAL</span>
+            <span class="live-value text-green">LIGADA</span>
+        </div>
+    </div>
+
+    <div class="card grafana-container area-live-chart">
+        <h3 class="live-chart-title">LIVE DATA STREAM</h3>
+        <div class="grafana-placeholder">Gráfico Grafana: Live Data Stream (Humidade, Temp, etc.)</div>
+    </div>
+
+    <div class="live-alerts-box">
+        <h3 class="alert-title"><i class="fa-solid fa-triangle-exclamation"></i> ALERTAS EM TEMPO REAL</h3>
+        <div class="alert-item">
+            <span class="alert-time">14:42:01</span>
+            <span class="alert-message">Nível de água no reservatório B abaixo dos 20%</span>
+        </div>
+    </div>
+
+</div>

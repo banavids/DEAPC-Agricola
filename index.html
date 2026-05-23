@@ -3,75 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmSmart OS - Autenticação</title>
+    <title>Login - FarmSmart OS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    
+    <div class="login-wrapper">
+        <div class="glow-effect"></div>
 
-    <main>
-        
-        <header>
-            <div class="logo-icon">🌱</div>
-            <h1>FarmSmart <span>OS</span></h1>
-            <p>AUTENTICAÇÃO DO SISTEMA</p>
+        <header class="header">
+            <i class="fa-solid fa-seedling logo-icon"></i>
+            <h1>FarmSmart <span class="highlight">OS</span></h1>
+            <p class="subtitle">AUTENTICAÇÃO DO SISTEMA</p>
         </header>
 
-        <section class="login-card">
-            
+        <main class="login-card">
             <form action="#" method="POST">
-                
-                <div class="form-group">
-                    <label for="username">UTILIZADOR / EMAIL</label>
-                    <input 
-                        type="email" 
-                        id="username" 
-                        name="username" 
-                        placeholder="admin@farmsmart.local" 
-                        required
-                    >
+                <div class="input-group">
+                    <label for="email">UTILIZADOR / EMAIL</label>
+                    <input type="text" id="email" value="admin@farmsmart.local">
                 </div>
 
-                <div class="form-group">
+                <div class="input-group">
                     <label for="password">PASSWORD</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        placeholder="••••••••" 
-                        required
-                    >
+                    <input type="password" id="password" value="12345678">
                 </div>
 
-                <div class="form-actions">
-                    <a href="recuperar.html">Recuperar acesso</a>
-                </div>
+                <a href="#" class="forgot-password">Recuperar acesso</a>
 
-                <button type="submit">
-                    <span>🔒</span> ENTRAR NO SISTEMA
+                <button type="submit" class="btn-login">
+                    <i class="fa-solid fa-lock"></i>
+                    ENTRAR NO SISTEMA
                 </button>
-
             </form>
 
-            <footer class="status-section">
-                <legend>STATUS</legend>
-                
-                <div class="status-container">
-                    <div class="status-card">
-                        <span class="icon">🖥️</span>
-                        <h3>SERVIDOR CORE</h3>
-                        <p class="online">• Online</p>
-                    </div>
+            <div class="divider">
+                <span>STATUS</span>
+            </div>
 
-                    <div class="status-card">
-                        <span class="icon">📶</span>
-                        <h3>MQTT BROKER</h3>
-                        <p class="connected">• Conectado</p>
+            <div class="status-container">
+                <div class="status-box">
+                    <i class="fa-solid fa-server status-icon"></i>
+                    <span class="status-title">SERVIDOR CORE</span>
+                    <div class="status-indicator">
+                        <span class="dot"></span> Online
                     </div>
                 </div>
-            </footer>
-
-        </section>
-
-    </main>
+                <div class="status-box">
+                    <i class="fa-solid fa-wifi status-icon"></i>
+                    <span class="status-title">MQTT BROKER</span>
+                    <div class="status-indicator">
+                        <span class="dot"></span> Conectado
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
 </body>
 </html>
