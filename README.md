@@ -94,7 +94,7 @@ A aplicação está estruturada em 14 ecrãs/componentes lógicos, desenhados pa
 
 ## 5. Arquitetura Técnica
 
-* **Frontend:** Interface Web Responsivcom gráficos dinâmicos integrados.
-* **Backend:** API RESTful .
+* **Frontend:** Interface Web Responsivo com gráficos dinâmicos integrados.
+* **Backend:** Php.
 * **Mensajaria/IoT:** Protocolo MQTT com Broker Eclipse Mosquitto.
-* **Base de Dados:** Relacional ( MySQL) para entidades e dados operacionais.
+* **Base de Dados:** Relacional (MySQL) para entidades e dados operacionais.
