@@ -20,7 +20,7 @@
             </div>
 
             <!-- Form -->
-            <form class="login-form" id="loginForm">
+            <form class="login-form" id="loginForm" action="login.php" method="POST">
                 <!-- Utilizador/Email -->
                 <div class="form-group">
                     <label for="email" class="form-label">UTILIZADOR / EMAIL</label>
@@ -29,6 +29,7 @@
                         <input 
                             type="text" 
                             id="email" 
+                            name="email"
                             placeholder="admin@farmsmart.local"
                             class="form-input"
                             required
@@ -44,6 +45,7 @@
                         <input 
                             type="password" 
                             id="password" 
+                            name="password"
                             placeholder="••••••••"
                             class="form-input"
                             required
