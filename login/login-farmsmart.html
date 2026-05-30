@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmSmart OS - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="login-styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h1 class="login-title">FarmSmart<span class="logo-accent"> OS</span></h1>
+                <p class="login-subtitle">AUTENTICAÇÃO DO SISTEMA</p>
+            </div>
+
+            <!-- Form -->
+            <form class="login-form" id="loginForm">
+                <!-- Utilizador/Email -->
+                <div class="form-group">
+                    <label for="email" class="form-label">UTILIZADOR / EMAIL</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input 
+                            type="text" 
+                            id="email" 
+                            placeholder="admin@farmsmart.local"
+                            class="form-input"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password" class="form-label">PASSWORD</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="••••••••"
+                            class="form-input"
+                            required
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recuperar Acesso -->
+                <a href="#" class="forgot-password">Recuperar acesso</a>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-lock-open"></i>
+                    ENTRAR NO SISTEMA
+                </button>
+            </form>
+
+            <!-- Status Section -->
+            <div class="status-section">
+                <p class="status-label">STATUS</p>
+                <div class="status-grid">
+                    <!-- Servidor -->
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <p class="status-name">SERVIDOR</p>
+                        <p class="status-value online">
+                            <span class="status-dot"></span>
+                            Online
+                        </p>
+                    </div>
+
+                    <!-- MQTT Broker -->
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <p class="status-name">MQTT BROKER</p>
+                        <p class="status-value conectado">
+                            <span class="status-dot"></span>
+                            Conectado
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Animation -->
+        <div class="bg-animation"></div>
+    </div>
+
+    <script src="login-script.js"></script>
+</body>
+</html>
