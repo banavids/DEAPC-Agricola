@@ -45,23 +45,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $db->close();
                 
-                // REDIRECIONA PARA O DASHBOARD ADMIN (ficheiro na raiz)
-                header("Location: ../admin.html"); 
+                // REDIRECIONA PARA A PÁGINA DE SUCESSO (Alterado para configuracoes.php)
+                header("Location: ../configuracoes.php"); 
                 exit;
 
             } else {
                 $db->close();
-                // REDIRECIONA PARA O LOGIN COM ERRO
+                // REDIRECIONA PARA O LOGIN COM ERRO (Passa a variável no link para o HTML ler)
                 header("Location: ../login/login-farmsmart.html?erro=dados_invalidos");
                 exit;
             }
         } catch (Exception $e) {
-            // REDIRECIONA PARA O LOGIN COM ERRO DE SERVIDOR
             header("Location: ../login/login-farmsmart.html?erro=erro_servidor");
             exit;
         }
     } else {
-        // REDIRECIONA PARA O LOGIN COM AVISO DE CAMPOS VAZIOS
         header("Location: ../login/login-farmsmart.html?erro=campos_vazios");
         exit;
     }
