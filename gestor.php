@@ -1,3 +1,11 @@
+<?php
+session_start();
+// Proteção: Se não houver sessão ativa, manda para o login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login-farmsmart.html");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -8,6 +16,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <?php include 'scripts/sidebar.php'; ?>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-wrapper">
+        
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-title">Dashboard Operacional</h1>
+            </div>
+            
+            <div class="topbar-right">
+                <div class="notifications">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge"></span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <span class="user-name">Gestor</span>
+                </div>
+            </div>
+        </header>
+
+    <main class="content-body">
 <div class="dashboard-content">
     
     <div class="action-bar">
@@ -106,7 +141,8 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
+</div>
 
 </div>
 </body>
