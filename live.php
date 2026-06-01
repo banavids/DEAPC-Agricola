@@ -19,9 +19,12 @@ if (!isset($_SESSION['user_id'])) {
     
     <div class="app-layout">
 
-        <?php include 'scripts/sidebar.php'; ?>
+    <?php 
+            require_once 'scripts/sidebar.php'; 
+            require_once 'scripts/database.php';
+    ?>
 
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <div class="main-wrapper">
             

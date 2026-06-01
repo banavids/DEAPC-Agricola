@@ -16,7 +16,10 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <?php include 'scripts/sidebar.php'; ?>
+    <?php 
+        require_once 'scripts/sidebar.php'; 
+        require_once 'scripts/database.php';
+    ?>
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
