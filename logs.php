@@ -5,6 +5,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
+
+// Captura a pesquisa se o utilizador tiver escrito algo
+$termoPesquisa = $_GET['search'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-PT">
@@ -56,64 +59,93 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="light-card full-width">
-                        <h2 class="page-title">Logs e Auditoria</h2>
-                        <button class="btn-outline">Filtros</button>
-                        <div class="toolbar" style="margin-bottom: 20px;">
-                            <div class="search-box">
+                        
+                        <form method="GET" action="" class="toolbar" style="margin-bottom: 20px; display: flex; gap: 10px;">
+                            <div class="search-box" style="flex-grow: 1;">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" placeholder="Procurar nos logs...">
+                                <input type="text" name="search" placeholder="Procurar por utilizador, ação ou detalhes..." value="<?php echo htmlspecialchars($termoPesquisa); ?>">
                             </div>
-                            <button class="btn-outline"><i class="fa-solid fa-filter"></i> Filtros (Data, Utilizador)</button>
-                        </div>
+                            <button type="submit" class="btn" style="background: #3b82f6; color: white; padding: 10px 20px; border:none; border-radius: 5px; cursor: pointer;">
+                                Procurar
+                            </button>
+                            <?php if (!empty($termoPesquisa)): ?>
+                                <a href="<?php echo htmlspecialchars(basename($_SERVER['PHP_SELF'])); ?>" class="btn" style="background: #ef4444; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Limpar</a>
+                            <?php endif; ?>
+                        </form>
 
                         <div class="table-responsive">
                             <table class="modern-table">
                                 <thead>
                                     <tr>
                                         <th>Data / Hora</th>
-                                        <th>Utilizador / Ator</th>
-                                        <th>Ação Realizada</th>
-                                        <th>Origem / Detalhes</th>
-                                    </tr>
+                                        <th>Utilizador</th> <th>Ação Realizada</th>
+                                        <th>Detalhes</th> </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span class="td-sub text-dark">21 Mai 2026 14:42</span></td>
-                                        <td><span class="td-title text-sm">Sistema Automático</span></td>
-                                        <td><span class="td-sub text-dark">Ligou Bomba Principal</span></td>
-                                        <td><span class="td-sub">Regra: Humidade < 40%</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-sub text-dark">21 Mai 2026 10:15</span></td>
-                                        <td><span class="td-title text-sm">Admin Silva</span></td>
-                                        <td><span class="td-sub text-dark">Criou utilizador 'Carlos Técnico'</span></td>
-                                        <td><span class="td-sub">Interface Web</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-sub text-dark">21 Mai 2026 09:30</span></td>
-                                        <td><span class="td-title text-sm">Maria Costa</span></td>
-                                        <td><span class="td-sub text-dark">Alterou configuração de rega</span></td>
-                                        <td><span class="td-sub">App Mobile</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-sub text-dark">20 Mai 2026 18:45</span></td>
-                                        <td><span class="td-title text-sm">João Operário</span></td>
-                                        <td><span class="td-sub text-dark">Concluiu Tarefa 'Colheita Lote 4'</span></td>
-                                        <td><span class="td-sub">App Mobile</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="td-sub text-dark">20 Mai 2026 16:00</span></td>
-                                        <td><span class="td-title text-sm">Sistema Automático</span></td>
-                                        <td><span class="td-sub text-red fw-bold">Alerta Crítico: Sensor Offline S001</span></td>
-                                        <td><span class="td-sub">Monitor MQTT</span></td>
-                                    </tr>
+                                    <?php
+                                    try {
+                                        $db_logs = new SQLite3(__DIR__ . '/bd/FarmOS.db');
+                                        
+                                        // Prepara a query base
+                                        $query = "
+                                            SELECT 
+                                                L.SLG_data_hora, 
+                                                L.SLG_acao, 
+                                                L.SLG_detalhes, 
+                                                U.USR_nome 
+                                            FROM tblSystemLog L
+                                            LEFT JOIN tblUser U ON L.SLG_user_id = U.USR_id
+                                        ";
+                                        
+                                        // Se houver pesquisa, adiciona a cláusula WHERE
+                                        if (!empty($termoPesquisa)) {
+                                            $query .= " WHERE L.SLG_acao LIKE :search OR L.SLG_detalhes LIKE :search OR U.USR_nome LIKE :search ";
+                                        }
+                                        
+                                        $query .= " ORDER BY L.SLG_data_hora DESC LIMIT 100";
+                                        
+                                        $stmt = $db_logs->prepare($query);
+                                        
+                                        // Vincula o termo de pesquisa de forma segura
+                                        if (!empty($termoPesquisa)) {
+                                            $stmt->bindValue(':search', '%' . $termoPesquisa . '%', SQLITE3_TEXT);
+                                        }
+                                        
+                                        $resultados = $stmt->execute();
+                                        $temResultados = false;
+                                        
+                                        while ($row = $resultados->fetchArray(SQLITE3_ASSOC)) {
+                                            $temResultados = true;
+                                            $dataFormatada = date('d M Y H:i:s', strtotime($row['SLG_data_hora']));
+                                            $nomeUtilizador = !empty($row['USR_nome']) ? htmlspecialchars($row['USR_nome']) : 'Sistema Automático';
+                                            $acao = htmlspecialchars($row['SLG_acao']);
+                                            $detalhes = htmlspecialchars($row['SLG_detalhes']);
+                                            
+                                            echo "<tr>";
+                                            echo "<td><span class='td-sub text-dark'>{$dataFormatada}</span></td>";
+                                            echo "<td><span class='td-title text-sm'>{$nomeUtilizador}</span></td>";
+                                            echo "<td><span class='td-sub text-dark'>{$acao}</span></td>";
+                                            echo "<td><span class='td-sub'>{$detalhes}</span></td>";
+                                            echo "</tr>";
+                                        }
+                                        
+                                        if (!$temResultados) {
+                                            echo "<tr><td colspan='4' style='text-align: center; padding: 20px;'>Nenhum log encontrado.</td></tr>";
+                                        }
+                                        
+                                        $db_logs->close();
+                                        
+                                    } catch (Exception $e) {
+                                        echo "<tr><td colspan='4' style='color:red;'>Erro ao carregar logs: " . $e->getMessage() . "</td></tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
                 </div>
-                </main>
+            </main>
         </div>
     </div>
 

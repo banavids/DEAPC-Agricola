@@ -4,7 +4,7 @@ import random
 import json
 
 # 1. Configurações
-BROKER = "100.125.153.75" # Ex: "100.123.45.67"
+BROKER = "100.125.153.75"
 PORTA = 1883
 
 # 2. Iniciar o Cliente MQTT

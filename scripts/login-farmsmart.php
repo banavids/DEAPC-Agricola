@@ -39,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $logStmt->bindValue(':ip', $ip, SQLITE3_TEXT);
                 $logStmt->execute();
 
+                
+
                 // Guarda os dados na sessão
                 $_SESSION['user_id'] = $userId;
                 $_SESSION['user_group'] = $user['USR_group_id'];
