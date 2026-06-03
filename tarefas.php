@@ -190,7 +190,7 @@ if (!isset($_SESSION['user_id'])) {
         
         // 1. Mudar o Estado para "Concluída"
         function concluirTarefa(idTarefa) {
-            fetch('scripts/api_tarefas.php', {
+            fetch('scripts/api-tarefas.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ acao: 'concluir', id: idTarefa })
@@ -220,19 +220,29 @@ if (!isset($_SESSION['user_id'])) {
                 zona_id: document.getElementById('nova_zona').value
             };
 
-            fetch('scripts/api_tarefas.php', {
+            fetch('scripts/api-tarefas.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin', // Faltava isto para a sessão!
                 body: JSON.stringify(dados)
             })
-            .then(response => response.json())
-            .then(data => {
-                if(data.sucesso) {
-                    // Recarrega a página para atualizar a grelha de cartões
-                    window.location.reload(); 
-                } else {
-                    alert("Erro ao criar: " + data.mensagem);
+            .then(response => response.text()) // Lemos como texto primeiro para apanhar erros do PHP
+            .then(text => {
+                try {
+                    let data = JSON.parse(text); // Tenta transformar em JSON
+                    if(data.sucesso) {
+                        window.location.reload(); 
+                    } else {
+                        alert("Erro ao criar: " + data.mensagem);
+                    }
+                } catch(err) {
+                    // Se o PHP der um erro fatal, cai aqui e mostra-te qual foi o erro!
+                    console.error("Resposta em bruto do servidor:", text);
+                    alert("O servidor não devolveu um JSON válido. Carrega no F12, vai à Consola e vê a resposta em bruto.");
                 }
+            })
+            .catch(error => {
+                alert("Falha total na comunicação com o ficheiro api-tarefas.php.");
             });
         });
     </script>
