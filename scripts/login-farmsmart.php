@@ -54,15 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $db->close();
                 // REDIRECIONA PARA O LOGIN COM ERRO (Passa a variável no link para o HTML ler)
-                header("Location: ../login/login-farmsmart.html?erro=dados_invalidos");
+                header("Location: ../login-farmsmart.html?erro=dados_invalidos");
                 exit;
             }
         } catch (Exception $e) {
-            header("Location: ../login/login-farmsmart.html?erro=erro_servidor");
+            header("Location: ../login-farmsmart.html?erro=erro_servidor");
             exit;
         }
     } else {
-        header("Location: ../login/login-farmsmart.html?erro=campos_vazios");
+        header("Location: ../login-farmsmart.html?erro=campos_vazios");
         exit;
     }
 }

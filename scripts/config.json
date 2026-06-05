@@ -1,0 +1,5 @@
+{
+    "mqtt_broker": "100.125.153.75",
+    "mqtt_port": 1883,
+    "bd_caminho": "bd/FarmOS.db"
+}

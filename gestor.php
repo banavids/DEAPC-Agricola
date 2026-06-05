@@ -1,151 +1,106 @@
 <?php
 session_start();
-// Proteção: Se não houver sessão ativa, manda para o login
+require_once 'scripts/database.php';
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
+
+// FUNÇÃO ROBUSTA: Usa query direta para evitar falhas do wrapper
+function get_val($type) {
+    global $db;
+    // Tenta obter o valor. Se falhar, retorna NULL.
+    // Usamos TRIM para remover espaços acidentais e LOWER para ser case-insensitive
+    $sql = "SELECT LEI_valor FROM tblLeituras WHERE TRIM(LOWER(LEI_tipo_sensor)) = TRIM(LOWER('$type')) ORDER BY LEI_data_hora DESC LIMIT 1";
+    $res = db_select($sql);
+    return $res ? (float)$res[0]['LEI_valor'] : 0.0;
+}
+
+// TESTE DE DADOS: Vamos guardar os valores aqui
+$val_temp = get_val('temperatura');
+$val_hum = get_val('humidade');
+$val_solo = get_val('humidade_solo');
+$val_ext = get_val('temperatura_exterior');
+
 ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - FarmSmart OS</title>
+    <title>Dashboard Gestor</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <?php 
-        require_once 'scripts/sidebar.php'; 
-        require_once 'scripts/database.php';
-    ?>
-
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
+    <?php require_once 'scripts/sidebar.php'; ?>
     <div class="main-wrapper">
-        
-        <header class="topbar">
-            <div class="topbar-left">
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <h1 class="page-title">Dashboard Operacional</h1>
-            </div>
+        <main class="content-body">
             
-            <div class="topbar-right">
-                <div class="notifications">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="badge"></span>
-                </div>
-                <div class="user-profile">
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                    <span class="user-name">Gestor</span>
-                </div>
+            <div style="background: #2d3748; color: #fff; padding: 10px; margin-bottom: 20px; font-family: monospace;">
+                Debug: T=<?php echo $val_temp; ?> | H=<?php echo $val_hum; ?> | Solo=<?php echo $val_solo; ?> | Ext=<?php echo $val_ext; ?>
             </div>
-        </header>
 
-    <main class="content-body">
-<div class="dashboard-content">
-    
-    <div class="action-bar">
-        <div class="action-group-left">
-            <button class="btn btn-blue"><i class="fa-solid fa-play"></i> Iniciar Rega Manual</button>
-            <button class="btn btn-red-solid"><i class="fa-regular fa-square"></i> Desligar Bombas</button>
-        </div>
-        <div class="action-group-right">
-            <button class="btn btn-green"><i class="fa-solid fa-plus"></i> Nova Produção</button>
-        </div>
+            <div class="card" style="padding: 20px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+                <div style="width: 150px;"><canvas id="gaugeTemp"></canvas><h4 style="text-align: center;">Temp. Int.</h4></div>
+                <div style="width: 150px;"><canvas id="gaugeHum"></canvas><h4 style="text-align: center;">Hum. Int.</h4></div>
+                <div style="width: 150px;"><canvas id="gaugeSolo"></canvas><h4 style="text-align: center;">Hum. Solo</h4></div>
+                <div style="width: 150px;"><canvas id="gaugeExt"></canvas><h4 style="text-align: center;">Temp. Ext.</h4></div>
+            </div>
+
+            <div class="card table-card" style="margin-top: 20px;">
+                <table class="data-table">
+                    <thead><tr><th>Sensor</th><th>Valor</th><th>Data/Hora</th></tr></thead>
+                    <tbody>
+                        <?php 
+                        $logs = db_select("SELECT LEI_tipo_sensor, LEI_valor, LEI_data_hora FROM tblLeituras ORDER BY LEI_data_hora DESC LIMIT 5");
+                        foreach($logs as $l) echo "<tr><td>{$l['LEI_tipo_sensor']}</td><td>{$l['LEI_valor']}</td><td>{$l['LEI_data_hora']}</td></tr>";
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
 
-    <div class="kpi-grid kpi-gestor">
-        <div class="card kpi-card">
-            <div class="kpi-info">
-                <span class="kpi-label">CULTURAS ATIVAS</span>
-                <span class="kpi-value">12</span>
-            </div>
-            <div class="kpi-icon icon-green"><i class="fa-solid fa-seedling"></i></div>
-        </div>
-        <div class="card kpi-card">
-            <div class="kpi-info">
-                <span class="kpi-label">REGAS ATIVAS</span>
-                <span class="kpi-value">3</span>
-            </div>
-            <div class="kpi-icon icon-blue"><i class="fa-solid fa-droplet"></i></div>
-        </div>
-        <div class="card kpi-card">
-            <div class="kpi-info">
-                <span class="kpi-label">SENSORES ONLINE</span>
-                <span class="kpi-value">145</span>
-            </div>
-            <div class="kpi-icon icon-purple"><i class="fa-solid fa-microchip"></i></div>
-        </div>
-        <div class="card kpi-card">
-            <div class="kpi-info">
-                <span class="kpi-label">ALERTAS</span>
-                <span class="kpi-value">2</span>
-            </div>
-            <div class="kpi-icon icon-red-solid"><i class="fa-solid fa-circle-exclamation"></i></div>
-        </div>
-    </div>
+    <script>
+    function criarGauge(id, valor, cor, unidade) {
+        // Se for 0, desenha uma rosca vazia mas visível (0.1)
+        const v = valor > 0 ? valor : 0.1;
+        new Chart(document.getElementById(id), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [v, 100 - v],
+                    backgroundColor: [cor, '#1e293b'],
+                    borderWidth: 0,
+                    circumference: 180,
+                    rotation: 270
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: {display: false}, tooltip: {enabled: false} }
+            },
+            plugins: [{
+                id: 'centerText',
+                beforeDraw(chart) {
+                    const { ctx, chartArea: { width, height } } = chart;
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 20px sans-serif';
+                    // Mostra o valor real (não o v=0.1)
+                    ctx.fillText(valor + unidade, width / 2, height - 5);
+                }
+            }]
+        });
+    }
 
-    <div class="tables-grid">
-        <div class="card table-card">
-            <h3 class="card-title">Tarefas Pendentes</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Tarefa</th>
-                        <th>Responsável</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Adubar setor A (Tomates)</td>
-                        <td>João Silva</td>
-                        <td><span class="status-badge badge-warning">Pendente</span></td>
-                    </tr>
-                    <tr>
-                        <td>Verificar bomba principal</td>
-                        <td>Maria Costa</td>
-                        <td><span class="status-badge badge-info">Em progresso</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="card table-card">
-            <h3 class="card-title">Últimas Leituras de Sensores</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Local</th>
-                        <th>Humidade</th>
-                        <th>Temperatura</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Estufa 1 - Tomates</td>
-                        <td>65%</td>
-                        <td>24°C</td>
-                    </tr>
-                    <tr>
-                        <td>Setor B - Alfaces</td>
-                        <td class="text-danger">42% <i class="fa-solid fa-circle-info"></i></td>
-                        <td>22°C</td>
-                    </tr>
-                    <tr>
-                        <td>Setor C - Morangos</td>
-                        <td>71%</td>
-                        <td>21°C</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
-</div>
-
-</div>
+    // Passagem direta dos valores PHP para JS
+    criarGauge('gaugeTemp', <?php echo $val_temp; ?>, '#10b981', 'ºC');
+    criarGauge('gaugeHum', <?php echo $val_hum; ?>, '#3b82f6', '%');
+    criarGauge('gaugeSolo', <?php echo $val_solo; ?>, '#f59e0b', '%');
+    criarGauge('gaugeExt', <?php echo $val_ext; ?>, '#6366f1', 'ºC');
+    </script>
 </body>
+</html>

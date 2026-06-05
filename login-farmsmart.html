@@ -20,6 +20,9 @@
             </div>
 
             <!-- Form -->
+             <div id="mensagemErro" style="display: none; background-color: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: center; font-weight: 600; font-size: 14px;">
+                <i class="fas fa-exclamation-circle"></i> <span id="textoErro"></span>
+            </div>
             <form class="login-form" id="loginForm" action="scripts/login-farmsmart.php" method="POST">
                 <!-- Utilizador/Email -->
                 <div class="form-group">
@@ -102,5 +105,30 @@
     </div>
 
     <script src="login-script.js"></script>
+    <script>
+        // Lê os parâmetros (aquilo que vem depois do "?" no link)
+        const urlParams = new URLSearchParams(window.location.search);
+        const erro = urlParams.get('erro');
+        
+        // Se existir um erro, mostra a caixa com a mensagem certa
+        if (erro) {
+            const caixaErro = document.getElementById('mensagemErro');
+            const textoErro = document.getElementById('textoErro');
+            
+            if (erro === 'dados_invalidos') {
+                textoErro.innerText = 'Utilizador ou password incorretos.';
+            } else if (erro === 'campos_vazios') {
+                textoErro.innerText = 'Por favor, preencha todos os campos.';
+            } else if (erro === 'conta_suspensa') {
+                textoErro.innerText = 'A sua conta está suspensa. Contacte o Administrador.';
+            } else if (erro === 'erro_servidor') {
+                textoErro.innerText = 'Erro ao ligar à base de dados.';
+            } else {
+                textoErro.innerText = 'Ocorreu um erro na autenticação.';
+            }
+            
+            caixaErro.style.display = 'block'; // Torna a caixa visível
+        }
+    </script>
 </body>
 </html>
