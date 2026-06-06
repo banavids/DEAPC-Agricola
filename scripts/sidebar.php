@@ -39,4 +39,20 @@
             <i class="fa-solid fa-right-from-bracket"></i> Terminar Sessão
         </a>
     </div>
+    <div class="sobre-projeto-container" style="padding: 15px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">
+    <button id="btnSobreProjeto" class="btn" style="width: 100%; background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer;">
+        <i class="fa-solid fa-circle-info"></i> Sobre o Projeto
+    </button>
+    
+    <div id="infoProjeto" style="display: none; margin-top: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; font-size: 13px; color: #cbd5e1;">
+        <h4 style="color: white; margin-bottom: 8px;">DEAPC - P43 - Agrícola</h4>
+        <p style="margin-bottom: 10px;">Sistema de Monitorização, Automação de Rega e Gestão de Produções Agrícolas Baseado em IoT.</p>
+        <strong style="color: white;">Elementos do Grupo:</strong>
+        <ul style="padding-left: 15px; margin-top: 5px;">
+            <li>1242043 - Ângelo Veiga</li>
+            <li>1242090 - Vítor Reppen</li>
+            <li>1221991 - Bernardo Lima</li>
+        </ul>
+    </div>
+</div>
 </aside>
