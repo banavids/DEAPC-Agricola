@@ -1,11 +1,11 @@
 /* ========================================================================== */
-/* FarmSmart OS - JavaScript Global (Inclui Resoluções do Guião W3)           */
+/* FarmSmart OS - JavaScript Global           */
 /* ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
 
     // -------------------------------------------------------------------------
-    // 1. MENU LATERAL (SIDEBAR) - Presente em todas as páginas
+    // 1. MENU LATERAL (SIDEBAR)
     // -------------------------------------------------------------------------
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // -------------------------------------------------------------------------
-    // 2. GUIÃO W3: INFORMAÇÃO DO PROJETO (Apresentar/Ocultar)
+    // INFORMAÇÃO DO PROJETO (Apresentar/Ocultar)
     // -------------------------------------------------------------------------
     const btnSobre = document.getElementById('btnSobreProjeto');
     const infoProjeto = document.getElementById('infoProjeto');
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // -------------------------------------------------------------------------
-    // 3. GUIÃO W3: VALIDAÇÃO VISUAL DE FORMULÁRIOS
+    // VALIDAÇÃO VISUAL DE FORMULÁRIOS
     // -------------------------------------------------------------------------
     const forms = document.querySelectorAll('form');
 
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // -------------------------------------------------------------------------
-    // 4. LÓGICA DE TAREFAS (Submissão Assíncrona via Fetch API)
+    // LÓGICA DE TAREFAS (Submissão Assíncrona via Fetch API)
     // -------------------------------------------------------------------------
     const formNovaTarefa = document.getElementById('formNovaTarefa');
     if (formNovaTarefa) {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =============================================================================
-// FUNÇÕES GLOBAIS (Devem ficar fora do DOMContentLoaded para os botões HTML)
+// FUNÇÕES GLOBAIS (Disponíveis em todas as páginas, para ações comuns como concluir tarefas, enviar comandos MQTT, e gerir utilizadores)
 // =============================================================================
 
 // TAREFAS: Concluir
