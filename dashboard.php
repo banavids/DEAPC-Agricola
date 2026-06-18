@@ -6,18 +6,18 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php");
+    exit;
+}
 
-// FUNÇÃO ROBUSTA: Usa query direta para evitar falhas do wrapper
 function get_val($type) {
     global $db;
-    // Tenta obter o valor. Se falhar, retorna NULL.
-    // Usamos TRIM para remover espaços acidentais e LOWER para ser case-insensitive
     $sql = "SELECT LEI_valor FROM tblLeituras WHERE TRIM(LOWER(LEI_tipo_sensor)) = TRIM(LOWER('$type')) ORDER BY LEI_data_hora DESC LIMIT 1";
     $res = db_select($sql);
     return $res ? (float)$res[0]['LEI_valor'] : 0.0;
 }
 
-// TESTE DE DADOS: Vamos guardar os valores aqui
 $val_temp = get_val('temperatura');
 $val_hum = get_val('humidade');
 $val_solo = get_val('humidade_solo');
@@ -64,7 +64,7 @@ $val_ext = get_val('temperatura_exterior');
 
     <script>
     function criarGauge(id, valor, cor, unidade) {
-        // Se for 0, desenha uma rosca vazia mas visível (0.1)
+
         const v = valor > 0 ? valor : 0.1;
         new Chart(document.getElementById(id), {
             type: 'doughnut',
@@ -89,14 +89,12 @@ $val_ext = get_val('temperatura_exterior');
                     ctx.textAlign = 'center';
                     ctx.fillStyle = '#ffffff';
                     ctx.font = 'bold 20px sans-serif';
-                    // Mostra o valor real (não o v=0.1)
                     ctx.fillText(valor + unidade, width / 2, height - 5);
                 }
             }]
         });
     }
 
-    // Passagem direta dos valores PHP para JS
     criarGauge('gaugeTemp', <?php echo $val_temp; ?>, '#10b981', 'ºC');
     criarGauge('gaugeHum', <?php echo $val_hum; ?>, '#3b82f6', '%');
     criarGauge('gaugeSolo', <?php echo $val_solo; ?>, '#f59e0b', '%');

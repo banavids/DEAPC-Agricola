@@ -1,3 +1,7 @@
+<?php 
+
+$grupo_id = $_SESSION['user_group'] ?? 3; 
+?>
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <div class="logo-icon">
@@ -9,58 +13,74 @@
     <nav class="sidebar-nav">
         <div class="nav-section">Navegação</div>
         <ul>
+            <?php if ($grupo_id == 1): ?>
             <li class="nav-item">
-                <a href="admin.php"><i class="fa-solid fa-user-shield"></i> Dashboard Admin</a>
+                <a href="admin.php"><i class="fa-solid fa-user-shield"></i>Dashboard Admin</a>
+            </li>
+            <?php endif; ?>
+
+            <li class="nav-item">
+                <a href="operador.php"><i class="fa-solid fa-tractor"></i>Dashboard Operador</a>
+            </li>
+
+            <?php if ($grupo_id == 1 || $grupo_id == 2): ?>
+            <li class="nav-item">
+                <a href="dashboard.php"><i class="fa-solid fa-chart-pie"></i>Dashboard Gestor</a>
             </li>
             <li class="nav-item">
-                <a href="operador.php"><i class="fa-solid fa-tractor"></i> Dashboard Operador</a>
+                <a href="zonas.php"><i class="fa-solid fa-map-location-dot"></i>Zonas</a>
             </li>
             <li class="nav-item">
-                <a href="dashboard.php"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                <a href="producoes.php"><i class="fa-solid fa-seedling"></i>Produções</a>
             </li>
             <li class="nav-item">
-                <a href="zonas.php"><i class="fa-solid fa-map-location-dot"></i> Zonas</a>
+                <a href="atuadores.php"><i class="fa-solid fa-gears"></i>Atuadores</a>
+            </li>
+            <?php endif; ?>
+            
+            <li class="nav-item">
+                <a href="sensores.php"><i class="fa-solid fa-tower-broadcast"></i>Sensores</a>
             </li>
             <li class="nav-item">
-                <a href="producoes.php"><i class="fa-solid fa-seedling"></i> Produções</a>
+                <a href="tarefas.php"><i class="fa-solid fa-clipboard-list"></i>Tarefas</a>
             </li>
+
+            <?php if ($grupo_id == 1 || $grupo_id == 2): ?>
             <li class="nav-item">
-                <a href="sensores.php"><i class="fa-solid fa-tower-broadcast"></i> Sensores</a>
+                <a href="utilizadores.php"><i class="fa-solid fa-users"></i>Utilizadores</a>
             </li>
+            <?php endif; ?>
+            
             <li class="nav-item">
-                <a href="atuadores.php"><i class="fa-solid fa-gears"></i> Atuadores</a>
+                <a href="relatorios.php"><i class="fa-solid fa-chart-column"></i>Relatórios</a>
             </li>
+
+            <?php if ($grupo_id == 1 || $grupo_id == 2): ?>
             <li class="nav-item">
-                <a href="tarefas.php"><i class="fa-solid fa-clipboard-list"></i> Tarefas</a>
+                <a href="logs.php"><i class="fa-solid fa-clock-rotate-left"></i>Auditoria</a>
             </li>
-            <li class="nav-item">
-                <a href="utilizadores.php"><i class="fa-solid fa-users"></i> Utilizadores</a>
-            </li>
-            <li class="nav-item">
-                <a href="relatorios.php"><i class="fa-solid fa-chart-column"></i> Relatórios</a>
-            </li>
-            <li class="nav-item">
-                <a href="logs.php"><i class="fa-solid fa-clock-rotate-left"></i> Auditoria</a>
-            </li>
+            <?php endif; ?>
         </ul>
 
+        <?php if ($grupo_id == 1 || $grupo_id == 2): ?>
         <div class="nav-section">Sistema</div>
         <ul>
             <li class="nav-item">
-                <a href="configuracoes.php"><i class="fa-solid fa-gear"></i> Configurações</a>
+                <a href="configuracoes.php"><i class="fa-solid fa-gear"></i>Configurações</a>
             </li>
         </ul>
+        <?php endif; ?>
     </nav>
     
     <div class="sidebar-footer">
         <a href="scripts/logout.php" class="btn-logout">
-            <i class="fa-solid fa-right-from-bracket"></i> Terminar Sessão
+            <i class="fa-solid fa-right-from-bracket"></i>Terminar Sessão
         </a>
     </div>
     
     <div class="sobre-projeto-container" style="padding: 15px; margin-top: auto; border-top: 1px solid var(--border-color, #334155);">
         <button id="btnSobreProjeto" style="width: 100%; justify-content: center; background: transparent; border: 1px solid #cbd5e1; padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #cbd5e1; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s;">
-            <i class="fa-solid fa-circle-info"></i> Sobre o Projeto
+            <i class="fa-solid fa-circle-info"></i>Sobre o Projeto
         </button>
     </div>
 </aside>
@@ -71,14 +91,12 @@
         top: 0; left: 0; width: 100vw; height: 100vh;
         background-color: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(5px);
-        z-index: 99999; /* Fica acima de TUDO */
-        display: none; /* Escondido por defeito */
+        z-index: 99999; 
+        display: none; 
         align-items: center;
         justify-content: center;
     }
-    .modal-projeto-overlay.active {
-        display: flex !important;
-    }
+    .modal-projeto-overlay.active { display: flex !important; }
     .modal-projeto-card {
         background-color: #1e293b;
         border: 1px solid #334155;
@@ -148,25 +166,13 @@
         const btnFechar = document.getElementById('btnFecharModal');
 
         if (btnAbrir && modalDiv) {
-            // Abrir
-            btnAbrir.addEventListener('click', function() {
-                modalDiv.classList.add('active');
-            });
-
-            // Função Fechar
+            btnAbrir.addEventListener('click', function() { modalDiv.classList.add('active'); });
             function fechar() { modalDiv.classList.remove('active'); }
-
-            // Fechar no X ou no Botão
             if(btnX) btnX.addEventListener('click', fechar);
             if(btnFechar) btnFechar.addEventListener('click', fechar);
-
-            // Fechar ao clicar no fundo escuro
-            modalDiv.addEventListener('click', function(e) {
-                if (e.target === modalDiv) fechar();
-            });
+            modalDiv.addEventListener('click', function(e) { if (e.target === modalDiv) fechar(); });
         }
         
-        // Efeito visual hover no botão de abrir
         if(btnAbrir) {
             btnAbrir.addEventListener('mouseover', () => { btnAbrir.style.background = 'rgba(255,255,255,0.05)'; btnAbrir.style.color = 'white'; });
             btnAbrir.addEventListener('mouseout', () => { btnAbrir.style.background = 'transparent'; btnAbrir.style.color = '#cbd5e1'; });

@@ -1,12 +1,21 @@
 <?php
 session_start();
-// Proteção de página: Se não tiver logado, volta para o login
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
 
-// Captura a pesquisa se o utilizador tiver escrito algo
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login-farmsmart.html");
+    exit;
+}
+
+
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php");
+    exit;
+}
 $termoPesquisa = $_GET['search'] ?? '';
 ?>
 <!DOCTYPE html>
@@ -97,7 +106,6 @@ $termoPesquisa = $_GET['search'] ?? '';
                                             LEFT JOIN tblUser U ON L.SLG_user_id = U.USR_id
                                         ";
                                         
-                                        // Se houver pesquisa, adiciona a cláusula WHERE
                                         if (!empty($termoPesquisa)) {
                                             $query .= " WHERE L.SLG_acao LIKE :search OR L.SLG_detalhes LIKE :search OR U.USR_nome LIKE :search ";
                                         }
@@ -106,7 +114,6 @@ $termoPesquisa = $_GET['search'] ?? '';
                                         
                                         $stmt = $db_logs->prepare($query);
                                         
-                                        // Vincula o termo de pesquisa de forma segura
                                         if (!empty($termoPesquisa)) {
                                             $stmt->bindValue(':search', '%' . $termoPesquisa . '%', SQLITE3_TEXT);
                                         }

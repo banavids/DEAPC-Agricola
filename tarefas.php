@@ -50,15 +50,12 @@ if (!isset($_SESSION['user_id'])) {
                             </div>
 
                             <?php
-                            // Abre ligação rápida à BD para preencher os dropdowns
                             $db_form = new SQLite3(__DIR__ . '/bd/FarmOS.db');
                             
-                            // Buscar Utilizadores
                             $users = [];
                             $res_users = $db_form->query("SELECT USR_id, USR_nome FROM tblUser ORDER BY USR_nome");
                             while ($u = $res_users->fetchArray(SQLITE3_ASSOC)) { $users[] = $u; }
 
-                            // Buscar Zonas (com proteção caso a tabela ainda não exista)
                             $zonas = [];
                             try {
                                 $res_zonas = $db_form->query("SELECT ZON_id, ZON_nome FROM tblZona ORDER BY ZON_nome");
@@ -66,7 +63,6 @@ if (!isset($_SESSION['user_id'])) {
                                     while ($z = $res_zonas->fetchArray(SQLITE3_ASSOC)) { $zonas[] = $z; }
                                 }
                             } catch (Exception $e) {
-                                // Fallback temporário se não tiveres tblZona criada
                                 $zonas = [['ZON_id' => 1, 'ZON_nome' => 'Estufa 1']];
                             }
                             $db_form->close();
@@ -106,7 +102,6 @@ if (!isset($_SESSION['user_id'])) {
                         try {
                             $db = new SQLite3(__DIR__ . '/bd/FarmOS.db');
                             
-                            // Vai buscar as tarefas pendentes, cruzando com o Nome do Utilizador
                             $query = "
                                 SELECT T.*, U.USR_nome 
                                 FROM tblTarefa T
@@ -133,8 +128,7 @@ if (!isset($_SESSION['user_id'])) {
                                 $zonaId = $row['TAR_zona_id']; // Se tiveres tblZona, fazemos o JOIN depois!
                                 $responsavel = !empty($row['USR_nome']) ? htmlspecialchars($row['USR_nome']) : 'ID: ' . $row['TAR_responsavel_id'];
                                 
-                                // Definir cores com base na prioridade
-                                $corHex = "#3b82f6"; // Default Blue (Normal)
+                                $corHex = "#3b82f6"; 
                                 $corFundo = "#dbeafe";
                                 if ($prioridade === 'Alta') { $corHex = "#ef4444"; $corFundo = "#fee2e2"; }
                                 if ($prioridade === 'Baixa') { $corHex = "#64748b"; $corFundo = "#f1f5f9"; }
@@ -174,7 +168,6 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <script>
-        // Lógica do Menu (Original)
         document.getElementById('menuToggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.add('open');
             document.getElementById('sidebarOverlay').classList.add('active');
@@ -184,11 +177,6 @@ if (!isset($_SESSION['user_id'])) {
             this.classList.remove('active');
         });
 
-        // -------------------------------------------------------------
-        // COMUNICAÇÃO COM O BACKEND (API)
-        // -------------------------------------------------------------
-        
-        // 1. Mudar o Estado para "Concluída"
         function concluirTarefa(idTarefa) {
             fetch('scripts/api-tarefas.php', {
                 method: 'POST',
@@ -198,7 +186,6 @@ if (!isset($_SESSION['user_id'])) {
             .then(response => response.json())
             .then(data => {
                 if(data.sucesso) {
-                    // Esconde o cartão visualmente de imediato com uma animação
                     let card = document.getElementById('tarefa_' + idTarefa);
                     card.style.opacity = '0';
                     setTimeout(() => { card.remove(); }, 300);
@@ -208,9 +195,8 @@ if (!isset($_SESSION['user_id'])) {
             });
         }
 
-        // 2. Adicionar Nova Tarefa
         document.getElementById('formNovaTarefa').addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede a página de recarregar
+            e.preventDefault();
             
             let dados = {
                 acao: 'criar',
@@ -223,20 +209,19 @@ if (!isset($_SESSION['user_id'])) {
             fetch('scripts/api-tarefas.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                credentials: 'same-origin', // Faltava isto para a sessão!
+                credentials: 'same-origin',
                 body: JSON.stringify(dados)
             })
-            .then(response => response.text()) // Lemos como texto primeiro para apanhar erros do PHP
+            .then(response => response.text())
             .then(text => {
                 try {
-                    let data = JSON.parse(text); // Tenta transformar em JSON
+                    let data = JSON.parse(text); 
                     if(data.sucesso) {
                         window.location.reload(); 
                     } else {
                         alert("Erro ao criar: " + data.mensagem);
                     }
                 } catch(err) {
-                    // Se o PHP der um erro fatal, cai aqui e mostra-te qual foi o erro!
                     console.error("Resposta em bruto do servidor:", text);
                     alert("O servidor não devolveu um JSON válido. Carrega no F12, vai à Consola e vê a resposta em bruto.");
                 }

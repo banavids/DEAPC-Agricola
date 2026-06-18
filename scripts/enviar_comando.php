@@ -13,7 +13,6 @@ $dados = json_decode(file_get_contents('php://input'), true);
 if (isset($dados['comando'])) {
     $comando = $dados['comando'];
     
-    // 1. TRADUZIR O COMANDO PARA A LINGUAGEM DA BD
     $tipo = '';
     $estado_bd = '';
 
@@ -39,20 +38,19 @@ if (isset($dados['comando'])) {
             exit;
     }
 
-    // 2. ATUALIZAR O ESTADO NA BASE DE DADO
+
     try {
         $query = "UPDATE tblAtuador SET ATU_estado = :estado WHERE ATU_tipo = :tipo";
         $parametros = [
             ':estado' => $estado_bd,
             ':tipo' => $tipo
         ];
-        db_update($query, $parametros); // Usa a tua função dedicada!
+        db_update($query, $parametros);
     } catch (Exception $e) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao atualizar a BD: ' . $e->getMessage()]);
-        exit; // Aborta se a BD falhar
+        exit;
     }
 
-    // 3. COMUNICAR COM O MQTT
     $server = '100.125.153.75';
     $port = 1883;
     $username = '';
@@ -65,7 +63,6 @@ if (isset($dados['comando'])) {
         $mqtt->publish('farmsmart/estufa1/comandos', $comando, 0, false);
         $mqtt->close();
         
-        // 4. REGISTAR O LOG (Já com os detalhes melhorados)
         $idUtilizador = $_SESSION['user_id'] ?? null;
         $acao = "Comando Atuador: " . $comando;
         $detalhes = "Enviou ordem via MQTT e alterou estado interno para " . strtoupper($estado_bd) . ".";

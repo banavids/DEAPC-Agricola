@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 $db_path = '../bd/FarmOS.db';
 
-// Verifica se o utilizador está logado
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['erro' => 'Não autenticado']);
     exit;
@@ -14,7 +14,7 @@ try {
     $userId = $_SESSION['user_id'];
     $userGroup = $_SESSION['user_group'] ?? 3;
     
-    // Se for Admin (grupo 1), vê o histórico de todos. Se não, vê apenas os seus próprios acessos.
+
     if ($userGroup == 1) {
         $query = 'SELECT l.ALG_data_hora, l.ALG_ip_address, u.USR_nome 
                   FROM tblAccessLog l 
@@ -37,7 +37,6 @@ try {
         $logs[] = $row;
     }
     
-    // Devolve os dados em formato JSON
     echo json_encode($logs);
     $db->close();
 } catch (Exception $e) {

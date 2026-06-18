@@ -8,10 +8,9 @@ try {
     
     $userId = $_SESSION['user_id'] ?? 0;
     $userGroup = $_SESSION['user_group'] ?? 0;
-    
-    // Filtra pelo nível de acesso
+
     if ($userGroup == 3) {
-        // Grupo 3 = Operador (vê apenas as suas)
+
         $query = 'SELECT t.TAR_id, t.TAR_descricao, t.TAR_prioridade, t.TAR_estado, z.ZON_nome, u.USR_nome 
                   FROM tblTarefa t 
                   LEFT JOIN tblZona z ON t.TAR_zona_id = z.ZON_id 
@@ -22,7 +21,7 @@ try {
         $stmt->bindValue(':uid', $userId, SQLITE3_INTEGER);
         $result = $stmt->execute();
     } else {
-        // Gestor ou Admin (veem todas)
+
         $query = 'SELECT t.TAR_id, t.TAR_descricao, t.TAR_prioridade, t.TAR_estado, z.ZON_nome, u.USR_nome 
                   FROM tblTarefa t 
                   LEFT JOIN tblZona z ON t.TAR_zona_id = z.ZON_id 

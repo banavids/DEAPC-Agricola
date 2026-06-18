@@ -10,7 +10,6 @@
 <body>
     <div class="login-container">
         <div class="login-card">
-            <!-- Header -->
             <div class="login-header">
                 <div class="logo-icon">
                     <i class="fas fa-leaf"></i>
@@ -19,98 +18,73 @@
                 <p class="login-subtitle">AUTENTICAÇÃO DO SISTEMA</p>
             </div>
 
-            <!-- Form -->
-             <div id="mensagemErro" style="display: none; background-color: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: center; font-weight: 600; font-size: 14px;">
+            <div id="mensagemErro" style="display: none; background-color: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: center; font-weight: 600; font-size: 14px;">
                 <i class="fas fa-exclamation-circle"></i> <span id="textoErro"></span>
             </div>
             <form class="login-form" id="loginForm" action="scripts/login-farmsmart.php" method="POST">
-                <!-- Utilizador/Email -->
                 <div class="form-group">
                     <label for="email" class="form-label">UTILIZADOR / EMAIL</label>
                     <div class="input-wrapper">
                         <i class="fas fa-user"></i>
-                        <input 
-                            type="text" 
-                            id="email" 
-                            name="email"
-                            placeholder="admin@farmsmart.local"
-                            class="form-input"
-                            required
-                        >
+                        <input type="text" id="email" name="email" placeholder="admin@farmsmart.local" class="form-input" required>
                     </div>
                 </div>
 
-                <!-- Password -->
                 <div class="form-group">
                     <label for="password" class="form-label">PASSWORD</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock"></i>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            placeholder="••••••••"
-                            class="form-input"
-                            required
-                        >
+                        <input type="password" id="password" name="password" placeholder="••••••••" class="form-input" required>
                         <button type="button" class="toggle-password" id="togglePassword">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Recuperar Acesso -->
                 <a href="#" class="forgot-password">Recuperar acesso</a>
 
-                <!-- Submit Button -->
                 <button type="submit" class="btn-login">
                     <i class="fas fa-lock-open"></i>
                     ENTRAR NO SISTEMA
                 </button>
             </form>
 
-            <!-- Status Section -->
             <div class="status-section">
                 <p class="status-label">STATUS</p>
                 <div class="status-grid">
-                    <!-- Servidor -->
                     <div class="status-card">
                         <div class="status-icon">
                             <i class="fas fa-server"></i>
                         </div>
                         <p class="status-name">SERVIDOR</p>
-                        <p class="status-value online">
-                            <span class="status-dot"></span>
-                            Online
+                        <p class="status-value" id="status-servidor" style="color: #94a3b8;">
+                            <span class="status-dot" style="background-color: #94a3b8;"></span>
+                            A verificar...
                         </p>
                     </div>
 
-                    <!-- MQTT Broker -->
                     <div class="status-card">
                         <div class="status-icon">
                             <i class="fas fa-network-wired"></i>
                         </div>
                         <p class="status-name">MQTT BROKER</p>
-                        <p class="status-value conectado">
-                            <span class="status-dot"></span>
-                            Conectado
+                        <p class="status-value" id="status-mqtt" style="color: #94a3b8;">
+                            <span class="status-dot" style="background-color: #94a3b8;"></span>
+                            A verificar...
                         </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Background Animation -->
         <div class="bg-animation"></div>
     </div>
 
-
     <script>
-        // Lê os parâmetros (aquilo que vem depois do "?" no link)
+
         const urlParams = new URLSearchParams(window.location.search);
         const erro = urlParams.get('erro');
         
-        // Se existir um erro, mostra a caixa com a mensagem certa
         if (erro) {
             const caixaErro = document.getElementById('mensagemErro');
             const textoErro = document.getElementById('textoErro');
@@ -127,8 +101,44 @@
                 textoErro.innerText = 'Ocorreu um erro na autenticação.';
             }
             
-            caixaErro.style.display = 'block'; // Torna a caixa visível
+            caixaErro.style.display = 'block';
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const srvText = document.getElementById('status-servidor');
+            const mqttText = document.getElementById('status-mqtt');
+
+            fetch('scripts/check-status.php?t=' + new Date().getTime())
+                .then(response => {
+                    if (!response.ok) throw new Error("Falha na resposta do servidor");
+                    return response.json();
+                })
+                .then(data => {
+
+                    if (data.servidor) {
+                        srvText.innerHTML = '<span class="status-dot" style="background-color: #10b981; box-shadow: 0 0 5px #10b981;"></span> Online';
+                        srvText.style.color = '#10b981';
+                    } else {
+                        srvText.innerHTML = '<span class="status-dot" style="background-color: #ef4444; box-shadow: 0 0 5px #ef4444;"></span> Offline';
+                        srvText.style.color = '#ef4444';
+                    }
+
+                    if (data.mqtt) {
+                        mqttText.innerHTML = '<span class="status-dot" style="background-color: #10b981; box-shadow: 0 0 5px #10b981;"></span> Conectado';
+                        mqttText.style.color = '#10b981';
+                    } else {
+                        mqttText.innerHTML = '<span class="status-dot" style="background-color: #ef4444; box-shadow: 0 0 5px #ef4444;"></span> Desligado';
+                        mqttText.style.color = '#ef4444';
+                    }
+                })
+                .catch(error => {
+
+                    srvText.innerHTML = '<span class="status-dot" style="background-color: #ef4444; box-shadow: 0 0 5px #ef4444;"></span> Offline';
+                    srvText.style.color = '#ef4444';
+                    mqttText.innerHTML = '<span class="status-dot" style="background-color: #ef4444; box-shadow: 0 0 5px #ef4444;"></span> Desligado';
+                    mqttText.style.color = '#ef4444';
+                });
+        });
     </script>
 </body>
 </html>

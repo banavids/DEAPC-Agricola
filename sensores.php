@@ -2,7 +2,7 @@
 session_start();
 require_once 'scripts/database.php';
 
-// Proteção de página
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
@@ -10,32 +10,25 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Obter nome do utilizador
 $user_dados = db_select("SELECT USR_nome FROM tblUser WHERE USR_id = :id", [':id' => $user_id]);
 $nome_completo = $user_dados ? $user_dados[0]['USR_nome'] : 'Utilizador';
 
-// ---------------------------------------------------------
-// 1. OBTER O ESTADO ATUAL DOS SENSORES (tblSensor)
-// ---------------------------------------------------------
 $sensores_atuais = db_select("SELECT * FROM tblSensor ORDER BY SNR_id ASC");
 
-// ---------------------------------------------------------
-// 2. OBTER O HISTÓRICO DE LEITURAS (tblLeituras)
-// ---------------------------------------------------------
-// Vamos buscar apenas as últimas 10 para não sobrecarregar a página
+
 $ultimas_leituras = db_select("SELECT * FROM tblLeituras ORDER BY LEI_data_hora DESC LIMIT 10");
 
 // Função auxiliar para definir cores, ícones e unidades automaticamente com base no tipo
 function getSensorConfig($tipo) {
     $tipo = strtolower($tipo);
     if (strpos($tipo, 'temperatura') !== false) {
-        return ['icone' => 'fa-temperature-half', 'cor' => '#ef4444', 'unidade' => 'ºC']; // Vermelho
+        return ['icone' => 'fa-temperature-half', 'cor' => '#ef4444', 'unidade' => 'ºC']; 
     } elseif ($tipo === 'humidade') {
-        return ['icone' => 'fa-droplet', 'cor' => '#3b82f6', 'unidade' => '%']; // Azul
+        return ['icone' => 'fa-droplet', 'cor' => '#3b82f6', 'unidade' => '%'];
     } elseif ($tipo === 'humidade_solo') {
-        return ['icone' => 'fa-seedling', 'cor' => '#f59e0b', 'unidade' => '%']; // Laranja/Castanho
+        return ['icone' => 'fa-seedling', 'cor' => '#f59e0b', 'unidade' => '%']; 
     }
-    return ['icone' => 'fa-microchip', 'cor' => '#64748b', 'unidade' => '']; // Default (Cinzento)
+    return ['icone' => 'fa-microchip', 'cor' => '#64748b', 'unidade' => ''];
 }
 
 ?>
@@ -180,7 +173,7 @@ function getSensorConfig($tipo) {
     </div>
 
     <script>
-        // Lógica simples do menu mobile
+
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');

@@ -2,7 +2,6 @@
 session_start();
 require_once 'scripts/database.php';
 
-// Proteção de página
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
@@ -10,36 +9,28 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// ---------------------------------------------------------
-// 1. PROCESSAR A CONCLUSÃO DE UMA TAREFA 
-// ---------------------------------------------------------
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['concluir_tarefa_id'])) {
     $id_tarefa = $_POST['concluir_tarefa_id'];
     
-    // Atualiza a tarefa para 'Concluída'
+
     $query = "UPDATE tblTarefa SET TAR_estado = 'Concluída' WHERE TAR_id = :id AND TAR_responsavel_id = :user";
     db_update($query, [':id' => $id_tarefa, ':user' => $user_id]);
     
-    // Regista no log a ação
+
     if (function_exists('registar_system_log')) {
         registar_system_log($user_id, "Tarefa Concluída", "Marcou a tarefa ID {$id_tarefa} como concluída.");
     }
-    
-    // Recarrega a página para limpar o POST
+
     header("Location: operador.php");
     exit;
 }
 
-// ---------------------------------------------------------
-// 2. OBTER DADOS DO UTILIZADOR E TAREFAS
-// ---------------------------------------------------------
 
-// Obter nome do utilizador
 $user_dados = db_select("SELECT USR_nome FROM tblUser WHERE USR_id = :id", [':id' => $user_id]);
 $nome_completo = $user_dados ? $user_dados[0]['USR_nome'] : 'Operador';
 $primeiro_nome = explode(' ', trim($nome_completo))[0]; 
 
-// CORREÇÃO: Usar TAR_data_criacao, TAR_zona_id e TAR_prioridade
 $tarefas_pendentes = db_select("
     SELECT TAR_id, TAR_descricao, TAR_data_criacao, TAR_zona_id, TAR_prioridade 
     FROM tblTarefa 
@@ -49,7 +40,6 @@ $tarefas_pendentes = db_select("
 
 $total_pendentes = count($tarefas_pendentes);
 
-// CORREÇÃO: Usar TAR_data_criacao
 $tarefas_concluidas = db_select("
     SELECT TAR_id, TAR_descricao, TAR_data_criacao 
     FROM tblTarefa 

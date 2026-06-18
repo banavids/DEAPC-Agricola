@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindValue(':id', $tarefa_id, SQLITE3_INTEGER);
             $stmt->execute();
             
-            // Regista o log da ação
             if(isset($_SESSION['user_id'])) {
                 $logStmt = $db->prepare('INSERT INTO tblSystemLog (SLG_user_id, SLG_acao, SLG_detalhes) VALUES (:uid, "Atualizar Tarefa", "Tarefa ID " || :id || " mudou para " || :estado)');
                 $logStmt->bindValue(':uid', $_SESSION['user_id'], SQLITE3_INTEGER);
@@ -25,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $db->close();
-            // Redireciona de volta para a página que enviou o pedido (pode ser o dashboard ou a página de tarefas)
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         } catch (Exception $e) {

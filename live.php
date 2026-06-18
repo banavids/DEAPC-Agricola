@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Proteção: Se não houver sessão ativa, manda para o login
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;

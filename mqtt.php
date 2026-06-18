@@ -1,8 +1,19 @@
 <?php
 session_start();
-// Proteção de página: Se não tiver logado, volta para o login
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
+    exit;
+}
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login-farmsmart.html");
+    exit;
+}
+
+
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php"); 
     exit;
 }
 ?>

@@ -16,21 +16,20 @@ print("Pressiona CTRL+C para parar.")
 
 try:
     while True:
-        # 3. Gerar dados falsos (Temperatura e Humidade)
+
         temp = round(random.uniform(20.0, 28.0), 1)
         hum = round(random.uniform(55.0, 75.0), 1)
         
-        # 4. Criar o formato JSON (igual ao que desenhaste no HTML)
+
         payload_temp = json.dumps({"valor": temp, "unidade": "C"})
         payload_hum = json.dumps({"valor": hum, "unidade": "%"})
         
-        # 5. Publicar nos Tópicos
+
         client.publish("farmsmart/estufa1/temperatura", payload_temp)
         client.publish("farmsmart/estufa1/humidade", payload_hum)
         
         print(f"Enviado -> Temp: {temp}ºC | Hum: {hum}%")
         
-        # Espera 3 segundos até enviar a próxima leitura
         time.sleep(3)
         
 except KeyboardInterrupt:

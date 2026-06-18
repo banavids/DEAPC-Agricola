@@ -8,14 +8,24 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login-farmsmart.html");
+    exit;
+}
+
+
+if ($_SESSION['user_group'] != 1) {
+    header("Location: operador.php"); 
+    exit;
+}
+
 $user_id = $_SESSION['user_id'];
 
-// 1. DADOS DO ADMIN
 $user_dados = db_select("SELECT USR_nome FROM tblUser WHERE USR_id = :id", [':id' => $user_id]);
 $nome_completo = $user_dados ? $user_dados[0]['USR_nome'] : 'Admin';
 $primeiro_nome = explode(' ', trim($nome_completo))[0];
 
-// 2. CÁLCULO DE KPIs DINÂMICOS
+
 $users_db = db_select("SELECT COUNT(USR_id) as total FROM tblUser WHERE USR_estado = 'Ativo'");
 $total_users = $users_db ? $users_db[0]['total'] : 0;
 
@@ -32,9 +42,7 @@ $ultimo_log_db = db_select("SELECT SLG_acao, SLG_data_hora FROM tblSystemLog ORD
 $ultima_acao = $ultimo_log_db ? $ultimo_log_db[0]['SLG_acao'] : 'Nenhuma atividade';
 $hora_ultima_acao = $ultimo_log_db ? date('H:i:s', strtotime($ultimo_log_db[0]['SLG_data_hora'])) : '--:--';
 
-// ---------------------------------------------------------
-// 3. PREPARAR DADOS PARA O CHART.JS (Últimas 10 Leituras)
-// ---------------------------------------------------------
+
 $temp_history = db_select("SELECT LEI_valor, LEI_data_hora FROM tblLeituras WHERE LEI_tipo_sensor = 'temperatura' ORDER BY LEI_data_hora DESC LIMIT 10");
 if(!$temp_history) $temp_history = [];
 $temp_history = array_reverse($temp_history); // Inverter para ficar cronológico no gráfico
@@ -43,7 +51,7 @@ $labels_js = [];
 $data_temp_js = [];
 
 foreach($temp_history as $row) {
-    // Extrai apenas a hora e minutos (Ex: 19:25)
+
     $hora = date('H:i', strtotime($row['LEI_data_hora']));
     $labels_js[] = "'" . $hora . "'";
     $data_temp_js[] = $row['LEI_valor'];
@@ -169,14 +177,12 @@ $data_temp_str = implode(',', $data_temp_js);
     <script src="scripts/admin.js"></script>
 
     <script>
-        // Configuração Global do Chart.js para Dark Mode
+
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = 'Inter, sans-serif';
 
-        // 1. Renderizar o Gráfico de Linhas (Temperatura)
         const ctxLine = document.getElementById('mainLineChart').getContext('2d');
         
-        // Criar um gradiente verde por baixo da linha
         let gradientGreen = ctxLine.createLinearGradient(0, 0, 0, 300);
         gradientGreen.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
         gradientGreen.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
@@ -196,7 +202,7 @@ $data_temp_str = implode(',', $data_temp_js);
                     pointBorderWidth: 2,
                     pointRadius: 4,
                     fill: true,
-                    tension: 0.4 // Curvas suaves
+                    tension: 0.4 
                 }]
             },
             options: {
@@ -217,7 +223,6 @@ $data_temp_str = implode(',', $data_temp_js);
             }
         });
 
-        // 2. Renderizar o Gráfico de Donut (Sensores Ativos/Inativos)
         const ctxDoughnut = document.getElementById('sensorDoughnutChart').getContext('2d');
         new Chart(ctxDoughnut, {
             type: 'doughnut',
@@ -233,7 +238,7 @@ $data_temp_str = implode(',', $data_temp_js);
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '75%', // Buraco no meio
+                cutout: '75%',
                 plugins: {
                     legend: { position: 'bottom', labels: { padding: 20, color: '#f8fafc' } }
                 }

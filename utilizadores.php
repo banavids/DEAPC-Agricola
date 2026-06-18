@@ -7,25 +7,21 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php");
+    exit;
+}
 
-// =========================================================================
-// 1. DESCOBRIR QUEM ESTÁ LOGADO (Para aplicar as regras de segurança)
-// =========================================================================
+
 $idLogado = $_SESSION['user_id'];
-// Vai buscar o grupo do utilizador atual. Se der erro, assume 3 (Operário) por segurança
 $dadosLogado = db_select('SELECT USR_group_id FROM tblUser WHERE USR_id = :id', [':id' => $idLogado]);
 $grupoLogado = !empty($dadosLogado) ? (int)$dadosLogado[0]['USR_group_id'] : 3;
 
 
-// =========================================================================
-// 2. LÓGICA DE CRIAÇÃO & EDIÇÃO DO UTILIZADOR
-// =========================================================================
 $erro = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
-    // --- CRIAR UTILIZADOR ---
-    // --- CRIAR UTILIZADOR ---
     if ($_POST['action'] === 'criar_user' && $grupoLogado <= 2) { 
         $nome = trim($_POST['nome'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -36,10 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         if (!empty($nome) && !empty($email) && !empty($password)) {
             
-            // 1. NOVA VALIDAÇÃO: Verificar se o nome já existe
             $nomeExiste = db_select('SELECT USR_id FROM tblUser WHERE LOWER(USR_nome) = LOWER(:nome)', [':nome' => $nome]);
             
-            // 2. NOVA VALIDAÇÃO: Verificar se o email já existe (mais limpo do que esperar pelo erro da BD)
             $emailExiste = db_select('SELECT USR_id FROM tblUser WHERE LOWER(USR_email) = LOWER(:email)', [':email' => $email]);
 
             if (!empty($nomeExiste)) {
@@ -49,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $erro = "Já existe um utilizador registado com o email: " . htmlspecialchars($email);
             } 
             else {
-                // Se o nome e email estiverem livres, avança com a gravação!
                 try {
                     db_insert('INSERT INTO tblUser (USR_nome, USR_email, USR_password, USR_group_id, USR_estado) 
                               VALUES (:nome, :email, :password, :grupo, :estado)', [
@@ -65,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     }
     
-    // --- EDITAR UTILIZADOR (Via Modal) ---
     elseif ($_POST['action'] === 'editar_user' && $grupoLogado <= 2) { 
         $editId = (int)$_POST['edit_id'];
         $nome = $_POST['nome'] ?? '';
@@ -89,12 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     }
     
-    // --- NOVO: MUDAR ESTADO RÁPIDO (Botão Suspender/Ativar) ---
     elseif ($_POST['action'] === 'mudar_estado' && $grupoLogado <= 2) {
         $idTarget = (int)$_POST['user_id'];
         $novoEstado = $_POST['novo_estado'];
         
-        // Proteção extra: Não deixes o Admin suspender-se a si próprio por engano!
+
         if ($idTarget === $idLogado) {
             $erro = "Não podes suspender a tua própria conta!";
         } else {
@@ -111,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// Buscar utilizadores para mostrar na tabela
 $utilizadores = db_select('SELECT * FROM tblUser ORDER BY USR_group_id ASC, USR_nome ASC');
 ?>
 <!DOCTYPE html>
@@ -209,7 +199,7 @@ $utilizadores = db_select('SELECT * FROM tblUser ORDER BY USR_group_id ASC, USR_
                                             <?php if ($grupoLogado < 3): ?>
                                                 <td class="text-right" style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                                     
-                                                    <?php if ($user['USR_id'] !== $idLogado): // Não mostra o botão no próprio user logado ?>
+                                                    <?php if ($user['USR_id'] !== $idLogado): ?>
                                                         <?php
                                                         $corBotaoToggle = (strtolower($estadoAtual) === 'ativo') ? '#ef4444' : '#10b981';
                                                         $iconBotaoToggle = (strtolower($estadoAtual) === 'ativo') ? 'fa-ban' : 'fa-check';
@@ -331,7 +321,6 @@ $utilizadores = db_select('SELECT * FROM tblUser ORDER BY USR_group_id ASC, USR_
     </div>
 
     <script>
-        // Menu Lateral Mobile
         document.getElementById('menuToggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.add('open');
             document.getElementById('sidebarOverlay').classList.add('active');
@@ -371,40 +360,33 @@ $utilizadores = db_select('SELECT * FROM tblUser ORDER BY USR_group_id ASC, USR_
             
             modalEdit.style.display = 'flex';
         }
-
-        // NOVO: Função para o Botão Rápido de Suspender/Ativar
         function mudarEstadoUser(idUser, estadoAtual) {
             let novoEstado = estadoAtual.toLowerCase() === 'ativo' ? 'Suspenso' : 'Ativo';
             let textoConfirmacao = estadoAtual.toLowerCase() === 'ativo' ? 'suspender' : 'ativar';
 
             if(confirm(`Tens a certeza que queres ${textoConfirmacao} este utilizador?`)) {
-                // Cria um formulário fantasma em código e envia-o para aproveitar a tua lógica PHP do topo!
                 let form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'utilizadores.php';
 
-                // Input para dizer ao PHP que a ação é 'mudar_estado'
                 let inputAction = document.createElement('input');
                 inputAction.type = 'hidden';
                 inputAction.name = 'action';
                 inputAction.value = 'mudar_estado';
                 form.appendChild(inputAction);
 
-                // Input com o ID do utilizador
                 let inputId = document.createElement('input');
                 inputId.type = 'hidden';
                 inputId.name = 'user_id';
                 inputId.value = idUser;
                 form.appendChild(inputId);
 
-                // Input com o novo estado pretendido
                 let inputEstado = document.createElement('input');
                 inputEstado.type = 'hidden';
                 inputEstado.name = 'novo_estado';
                 inputEstado.value = novoEstado;
                 form.appendChild(inputEstado);
 
-                // Envia o formulário
                 document.body.appendChild(form);
                 form.submit();
             }

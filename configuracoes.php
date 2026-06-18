@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Opcional: Proteger a página para obrigar a ter login feito
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;

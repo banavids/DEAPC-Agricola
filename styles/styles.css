@@ -1,6 +1,4 @@
-/* ==========================================================================
-   1. RESET BÁSICO, FONTES E VARIÁVEIS GLOBAIS (THEME: PREMIUM DARK)
-   ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
@@ -48,9 +46,7 @@ body {
 .text-dark { color: #f8fafc !important; } /* Forçado para Dark Mode */
 .fw-bold { font-weight: 600; }
 
-/* ==========================================================================
-   2. ESTRUTURA LAYOUT BASE & MENU LATERAL (SIDEBAR)
-   ========================================================================== */
+
 .app-layout {
     display: flex;
     min-height: 100vh;
@@ -295,9 +291,7 @@ body {
     color: var(--text-main);
 }
 
-/* ==========================================================================
-   3. CARTÕES UNIFICADOS E ELEMENTOS COMUNS
-   ========================================================================== */
+
 /* Todos os cartões agora usam a mesma paleta elegante */
 .card, .light-card {
     background-color: var(--bg-card);
@@ -394,9 +388,7 @@ body {
 .bg-red-light { background-color: rgba(239, 68, 68, 0.15); color: #f87171; }
 .bg-blue-light { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
 
-/* ==========================================================================
-   4. TABELAS E COMPONENTES DE LISTAS
-   ========================================================================== */
+
 .table-responsive { overflow-x: auto; width: 100%; }
 
 .data-table, .modern-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
@@ -438,9 +430,6 @@ body {
 .event-desc { font-size: 13px; color: var(--text-nav); }
 .event-error .event-desc { color: #f87171; }
 
-/* ==========================================================================
-   5. VISTAS ESPECÍFICAS DOS DASHBOARDS
-   ========================================================================== */
 
 /* --- ECRÃ DE LOGIN --- */
 .login-wrapper { position: relative; width: 100%; max-width: 420px; padding: 20px; z-index: 1; margin: auto; }
@@ -516,9 +505,7 @@ body {
 .note-author { display: block; font-size: 11px; font-weight: 700; color: #fbbf24; margin-bottom: 5px; }
 .note-text { font-size: 13px; color: #fde68a; }
 
-/* ==========================================================================
-   6. PAGINAÇÃO E LAYOUTS ADICIONAIS (SENSORES, ATUADORES, ETC)
-   ========================================================================== */
+
 
 /* --- SENSORES --- */
 .sensor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
@@ -647,9 +634,7 @@ body {
 .checkbox-label { font-size: 13px; color: var(--text-nav); display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
 
-/* ==========================================================================
-   7. MEDIA QUERIES (RESPONSIVIDADE)
-   ========================================================================== */
+
 @media screen and (max-width: 1024px) {
     .sidebar { transform: translateX(-100%); }
     .sidebar.open { transform: translateX(0); }

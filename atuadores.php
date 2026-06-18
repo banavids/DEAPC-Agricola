@@ -7,23 +7,29 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// 1. LER OS ESTADOS DOS ATUADORES DA BD
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login-farmsmart.html");
+    exit;
+}
+
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php"); 
+    exit;
+}
+
 $atuadores_db = db_select("SELECT ATU_tipo, ATU_estado FROM tblAtuador");
 
-// Valores padrão padronizados
 $estados = [
     'rega' => 'desligado',
     'porta' => 'desligado'
 ];
 
-// Preenche com os dados reais
 if ($atuadores_db) {
     foreach ($atuadores_db as $atuador) {
         $estados[$atuador['ATU_tipo']] = strtolower($atuador['ATU_estado']); // Força minúsculas para evitar erros
     }
 }
 
-// 2. PREPARAR VARIÁVEIS (Apenas UI traduz o estado para o utilizador)
 $rega_estado = $estados['rega'];
 $rega_btn_class = ($rega_estado === 'ligado') ? 'btn-on' : 'btn-off';
 $rega_btn_text = ($rega_estado === 'ligado') ? '<i class="fa-solid fa-power-off"></i> Desligar Rega' : '<i class="fa-solid fa-power-off"></i> Ligar Rega';

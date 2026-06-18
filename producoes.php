@@ -2,21 +2,23 @@
 session_start();
 require_once 'scripts/database.php';
 
-// Proteção de página
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
 
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php");
+    exit;
+}
+
 $user_id = $_SESSION['user_id'];
 
-// ---------------------------------------------------------
-// 1. PROCESSAR FORMULÁRIO (INSERIR, EDITAR OU ELIMINAR)
-// ---------------------------------------------------------
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
     $acao = $_POST['acao'];
 
-    // ELIMINAR PRODUÇÃO
     if ($acao === 'eliminar_producao') {
         $id_eliminar = $_POST['prd_id'];
         $query = "DELETE FROM tblProducao WHERE PRD_id = :id";
@@ -25,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         if (function_exists('registar_system_log')) registar_system_log($user_id, "Eliminar Produção", "Eliminou a produção ID $id_eliminar");
     } 
     else {
-        // INSERIR OU EDITAR
         $nome = $_POST['nome'];
         $cultura = $_POST['cultura'];
         $zona_id = $_POST['zona_id'];
@@ -55,14 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         }
     }
 
-    // Recarregar a página
     header("Location: producoes.php");
     exit;
 }
 
-// ---------------------------------------------------------
-// 2. OBTER DADOS PARA A PÁGINA
-// ---------------------------------------------------------
 $zonas_disponiveis = db_select("SELECT ZON_id, ZON_nome FROM tblZona ORDER BY ZON_nome ASC");
 
 $producoes = db_select("
@@ -244,7 +241,7 @@ function getEstadoBadge($estado) {
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. Menu Mobile
+
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -260,7 +257,6 @@ function getEstadoBadge($estado) {
                 });
             }
 
-            // 2. Lógica do Modal
             const modal = document.getElementById('modalNovaProducao');
             const formProducao = document.getElementById('formNovaProducao');
             const inputAcao = document.getElementById('inputAcao');
@@ -273,8 +269,6 @@ function getEstadoBadge($estado) {
             document.getElementById('btnFecharModal')?.addEventListener('click', closeModal);
             document.getElementById('btnCancelarModal')?.addEventListener('click', closeModal);
             document.getElementById('modalOverlay')?.addEventListener('click', closeModal);
-
-            // Ação: NOVA Produção
             const btnNova = document.getElementById('btnNovaProducao');
             if(btnNova) {
                 btnNova.addEventListener('click', () => {
@@ -286,7 +280,6 @@ function getEstadoBadge($estado) {
                 });
             }
 
-            // Ação: EDITAR Produção
             const botoesEditar = document.querySelectorAll('.btn-edit');
             botoesEditar.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -302,7 +295,6 @@ function getEstadoBadge($estado) {
                 });
             });
 
-            // Ação: ELIMINAR Produção
             const botoesEliminar = document.querySelectorAll('.btn-delete');
             botoesEliminar.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -313,7 +305,6 @@ function getEstadoBadge($estado) {
                 });
             });
 
-            // Validação Obrigatória W3
             const forms = document.querySelectorAll('form.producao-form');
             forms.forEach(form => {
                 form.setAttribute('novalidate', true); 

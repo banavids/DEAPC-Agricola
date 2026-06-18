@@ -4,7 +4,6 @@ import json
 import datetime
 import os
 
-# 1. TRUQUE DO CAMINHO
 PASTA_DO_SCRIPT = os.path.dirname(os.path.abspath(__file__))
 PASTA_RAIZ = os.path.dirname(PASTA_DO_SCRIPT)
 
@@ -22,7 +21,6 @@ except Exception as e:
     print(f"Erro a ler config.json ou encontrar base de dados: {e}")
     exit()
 
-# 2. O QUE FAZER QUANDO CHEGA UM DADO NOVO
 def on_message(client, userdata, msg):
     topico = msg.topic
     payload_str = msg.payload.decode("utf-8")
@@ -52,13 +50,11 @@ def on_message(client, userdata, msg):
             if zona:
                 zona_id = zona[0]
 
-                # Histórico
                 cursor.execute("""
                     INSERT INTO tblLeituras (LEI_zona_id, LEI_tipo_sensor, LEI_valor, LEI_data_hora)
                     VALUES (?, ?, ?, ?)
                 """, (zona_id, tipo_sensor, valor_final, agora))
 
-                # Atualizar estado atual
                 cursor.execute("SELECT SNR_id FROM tblSensor WHERE SNR_zona_id = ? AND SNR_tipo = ?", (zona_id, tipo_sensor))
                 sensor = cursor.fetchone()
 
@@ -80,7 +76,6 @@ def on_message(client, userdata, msg):
         except Exception as e:
             print(f"Erro na BD: {e}")
 
-# 3. CONFIGURAR MQTT E SUBSCREVER
 client = mqtt.Client(client_id="FarmSmart_Gravador")
 client.on_message = on_message
 
@@ -91,7 +86,6 @@ except Exception as e:
     print(f"Falha ao ligar ao MQTT: {e}")
     exit()
 
-# Subscreve os tópicos (ADICIONEI A LINHA DA TEMPERATURA EXTERIOR)
 client.subscribe("farmsmart/+/temperatura")
 client.subscribe("farmsmart/+/humidade")
 client.subscribe("farmsmart/+/humidade_solo")

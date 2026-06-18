@@ -2,19 +2,14 @@
 session_start();
 require_once 'scripts/database.php';
 
-// Proteção de página
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
 
-// =========================================================================
-// MOTOR DE EXPORTAÇÃO (EXCEL / XLS)
-// =========================================================================
 if (isset($_GET['exportar'])) {
     $tipo = $_GET['exportar'];
 
-    // --- 1. EXPORTAÇÃO DE TAREFAS ---
     if ($tipo === 'tarefas') {
         header("Content-Type: application/vnd.ms-excel; charset=utf-8");
         header("Content-Disposition: attachment; filename=\"Relatorio_Tarefas_" . date('Y-m-d') . ".xls\"");
@@ -56,7 +51,6 @@ if (isset($_GET['exportar'])) {
         echo '</table>'; exit;
     }
 
-    // --- 2. EXPORTAÇÃO DE TELEMETRIA (SENSORES) ---
     elseif ($tipo === 'telemetria') {
         header("Content-Type: application/vnd.ms-excel; charset=utf-8");
         header("Content-Disposition: attachment; filename=\"Relatorio_Telemetria_" . date('Y-m-d') . ".xls\"");
@@ -89,7 +83,6 @@ if (isset($_GET['exportar'])) {
         echo '</table>'; exit;
     }
 
-    // --- 3. EXPORTAÇÃO DE AUDITORIA (LOGS) ---
     elseif ($tipo === 'auditoria') {
         header("Content-Type: application/vnd.ms-excel; charset=utf-8");
         header("Content-Disposition: attachment; filename=\"Relatorio_Auditoria_" . date('Y-m-d') . ".xls\"");
@@ -122,9 +115,7 @@ if (isset($_GET['exportar'])) {
         echo '</table>'; exit;
     }
 }
-// =========================================================================
 
-// --- OBTER DADOS REAIS PARA OS CARTÕES HTML ---
 $contagemTarefas = 0; $pendentesTarefas = 0;
 $contagemLeituras = 0; $ultimaLeitura = 'Sem dados';
 $contagemLogs = 0; $ultimoLog = 'Sem dados';

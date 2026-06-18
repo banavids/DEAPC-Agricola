@@ -25,18 +25,17 @@ function toggleAtuador(btnElement) {
     const textoOriginal = btnElement.innerHTML;
     let comandoDesejado = "";
 
-    // 1. Determinar o comando MQTT com base num estado universal
     if (tipo === 'rega') {
         comandoDesejado = (estadoAtual === 'desligado') ? 'LIGAR_REGA' : 'DESLIGAR_REGA';
     } else if (tipo === 'porta') {
         comandoDesejado = (estadoAtual === 'desligado') ? 'ABRIR' : 'FECHAR';
     }
 
-    // 2. Feedback visual
+
     btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> A enviar...';
     btnElement.disabled = true;
 
-    // 3. Comunicação
+
     fetch('scripts/enviar_comando.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

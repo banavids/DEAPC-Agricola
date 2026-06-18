@@ -1,12 +1,7 @@
-/* ========================================================================== */
-/* FarmSmart OS - JavaScript Global           */
-/* ========================================================================== */
+
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    // -------------------------------------------------------------------------
-    // 1. MENU LATERAL (SIDEBAR)
-    // -------------------------------------------------------------------------
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -23,9 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // -------------------------------------------------------------------------
-    // INFORMAÇÃO DO PROJETO (Apresentar/Ocultar)
-    // -------------------------------------------------------------------------
+
     const btnSobre = document.getElementById('btnSobreProjeto');
     const infoProjeto = document.getElementById('infoProjeto');
 
@@ -41,26 +34,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // -------------------------------------------------------------------------
-    // VALIDAÇÃO VISUAL DE FORMULÁRIOS
-    // -------------------------------------------------------------------------
+
     const forms = document.querySelectorAll('form');
 
     forms.forEach(form => {
-        // Ignora o form de login caso tenha lógica própria noutro ficheiro
+
         if(form.id === 'loginForm') return; 
 
-        // Desativa balões nativos do browser
         form.setAttribute('novalidate', true);
 
         form.addEventListener('submit', function(e) {
             let formValido = true;
             
-            // Limpa erros anteriores
             form.querySelectorAll('.msg-erro-validacao').forEach(msg => msg.remove());
             form.querySelectorAll('.input-erro').forEach(input => input.classList.remove('input-erro'));
 
-            // Valida campos obrigatórios
             const camposObrigatorios = form.querySelectorAll('[required]');
             
             camposObrigatorios.forEach(campo => {
@@ -75,21 +63,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Se o formulário não for válido, bloqueia o envio completamente
             if (!formValido) {
                 e.preventDefault();
-                e.stopImmediatePropagation(); // Evita que o fetch das tarefas (abaixo) seja disparado com erros
+                e.stopImmediatePropagation(); 
             }
         });
     });
 
-    // -------------------------------------------------------------------------
-    // LÓGICA DE TAREFAS (Submissão Assíncrona via Fetch API)
-    // -------------------------------------------------------------------------
     const formNovaTarefa = document.getElementById('formNovaTarefa');
     if (formNovaTarefa) {
         formNovaTarefa.addEventListener('submit', function(e) {
-            // Impedimos o reload padrão. A validação do Passo 3 já verificou se está vazio.
             e.preventDefault();
 
             let dados = {
@@ -116,11 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// =============================================================================
-// FUNÇÕES GLOBAIS (Disponíveis em todas as páginas, para ações comuns como concluir tarefas, enviar comandos MQTT, e gerir utilizadores)
-// =============================================================================
 
-// TAREFAS: Concluir
 window.concluirTarefa = function(idTarefa) {
     fetch('scripts/api-tarefas.php', {
         method: 'POST',
@@ -142,7 +121,6 @@ window.concluirTarefa = function(idTarefa) {
     });
 };
 
-// ATUADORES: Enviar Comando MQTT
 window.enviarComandoMQTT = function(comandoDesejado) {
     fetch('scripts/enviar_comando.php', {
         method: 'POST',
@@ -158,7 +136,6 @@ window.enviarComandoMQTT = function(comandoDesejado) {
     .catch(error => alert("❌ Erro crítico de comunicação com o servidor."));
 };
 
-// UTILIZADORES: Fechar Modais
 window.fecharModais = function() { 
     const modalCreate = document.getElementById('modalUser');
     const modalEdit = document.getElementById('modalEditUser');
@@ -166,7 +143,7 @@ window.fecharModais = function() {
     if(modalEdit) modalEdit.style.display = 'none'; 
 };
 
-// UTILIZADORES: Abrir Modal Edição
+
 window.abrirModalEdicao = function(id, nome, email, grupo, estado) {
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_nome').value = nome;
@@ -185,7 +162,6 @@ window.abrirModalEdicao = function(id, nome, email, grupo, estado) {
     if(modalEdit) modalEdit.style.display = 'flex';
 };
 
-// UTILIZADORES: Mudar Estado Suspenso/Ativo
 window.mudarEstadoUser = function(idUser, estadoAtual) {
     let novoEstado = estadoAtual.toLowerCase() === 'ativo' ? 'Suspenso' : 'Ativo';
     let textoConfirmacao = estadoAtual.toLowerCase() === 'ativo' ? 'suspender' : 'ativar';

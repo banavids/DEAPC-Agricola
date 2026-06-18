@@ -4,13 +4,15 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login/login-farmsmart.html");
     exit;
 }
+if ($_SESSION['user_group'] == 3) {
+    header("Location: operador.php");
+    exit;
+}
 
-// LÓGICA PARA GRAVAR NOVA ZONA
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_zona'])) {
     try {
         $db = new SQLite3(__DIR__ . '/bd/FarmOS.db');
         
-        // Agora incluímos o ZON_tipo que tu já tinhas na BD!
         $stmt = $db->prepare("INSERT INTO tblZona (ZON_nome, ZON_tipo, ZON_descricao, ZON_topico_base) VALUES (:nome, :tipo, :desc, :topico)");
         $stmt->bindValue(':nome', $_POST['nome_zona'], SQLITE3_TEXT);
         $stmt->bindValue(':tipo', $_POST['tipo_zona'], SQLITE3_TEXT);
