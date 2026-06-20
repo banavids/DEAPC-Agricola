@@ -1,6 +1,5 @@
 # DEAPC-Agricola
-> **Projeto DEAPC - P43 - Agrícola**  
-> Sistema de Monitorização, Automação de Rega e Gestão de Produções Agrícolas Baseado em IoT.
+> **Projeto DEAPC - P43 - Agrícola** > Sistema de Monitorização, Automação de Rega e Gestão de Produções Agrícolas Baseado em IoT.
 
 ---
 
@@ -19,11 +18,11 @@ O projeto **DEAPC-Agricola** é uma plataforma de gestão e automação agrícol
 
 O sistema divide-se em três perfis de acesso, garantindo a segurança da plataforma e a estrita confidencialidade dos dados estratégicos da exploração agrícola.
 
-| Perfil                    | Descrição Geral                                   | Escopo de Acesso |
-
-| **Administrador (Admin)** | Gestão técnica da plataforma e infraestrutura.    | Acesso total e irrestrito a todos os módulos e configurações. |
-| **Gestor Agrícola**       | Planeamento, análise de dados e coordenação.      | Visão global da quinta, relatórios, gestão de sensores e atuadores. |
-| **Operário Agrícola**     | Execução de tarefas práticas no campo.            | Restrito à produção e às tarefas que lhe foram explicitamente atribuídas. |
+| Perfil | Descrição Geral | Escopo de Acesso |
+| :--- | :--- | :--- |
+| **Administrador (Admin)** | Gestão técnica da plataforma e infraestrutura. | Acesso total e irrestrito a todos os módulos e configurações. |
+| **Gestor Agrícola** | Planeamento, análise de dados e coordenação. | Visão global da quinta, relatórios, gestão de sensores e atuadores. |
+| **Operário Agrícola** | Execução de tarefas práticas no campo. | Restrito à produção e às tarefas que lhe foram explicitamente atribuídas. |
 
 ---
 
@@ -48,7 +47,7 @@ O sistema divide-se em três perfis de acesso, garantindo a segurança da plataf
 ### Módulo 4: IoT, Sensores e Alertas
 * **US4.1 [Alertas Automáticos]:** Como Gestor Agrícola, quero receber alertas quando a humidade do solo estiver abaixo do nível recomendado, para que possa agir rapidamente e evitar danos na cultura.
 * **US4.2 [Monitorização em Tempo Real]:** Como Gestor Agrícola, quero visualizar dados dos sensores em tempo real, para que acompanhe as condições da produção continuamente.
-* **US7.1 [Histórico de Sensores]:** Como Gestor Agrícola, quero consultar o histórico dos sensores, para analisar padrões climáticos e produtividade.
+* **US4.3 [Histórico de Sensores]:** Como Gestor Agrícola, quero consultar o histórico dos sensores, para analisar padrões climáticos e produtividade.
 
 ### Módulo 5: Automação de Irrigação
 * **US5.1 [Rega Automática]:** Como Gestor Agrícola, quero que o sistema ative automaticamente a irrigação quando a humidade estiver baixa, para reduzir a intervenção manual.
@@ -79,15 +78,15 @@ A aplicação está estruturada em 14 ecrãs/componentes lógicos, desenhados pa
 
 ### 4.4 Infraestrutura IoT e Telemetria
 * **4. Página de Sensores:** Listagem do hardware (tipo, estado online/offline, último valor recebido) e ecrã de detalhe com gráficos de médias e histórico.
-* **5. Página de Atuadores:** Controlo manual e automático de relés (bomba de água, fertilização, ventilação simulada) acompanhado por um histórico de acionamentos (*ex: 14:32 bomba ligada*).
+* **5. Página de Atuadores:** Controlo manual e automático de relés (bomba de água, fertilização, ventilação simulada) acompanhado por um histórico de acionamentos.
 * **6. Página de Monitorização Live:** Painel dinâmico em tempo real enriquecido com *widgets* de ponteiro (*gauges* para humidade/temperatura) e gráficos de séries temporais.
-* **7. Página MQTT / IoT:** Consola de diagnóstico que exibe o estado do *broker*, os dispositivos ligados, os tópicos ativos e o fluxo das últimas mensagens (*ex: farm/sensor/humidade -> 22%*).
+* **7. Página MQTT / IoT:** Consola de diagnóstico que exibe o estado do *broker*, os dispositivos ligados, os tópicos ativos e o fluxo das últimas mensagens.
 
 ### 4.5 Dados, Logs e Configurações
 * **8. Página de Relatórios:** Módulo de inteligência de dados para exportação de dados consolidados (produção, consumo de água diário/mensal, alertas) em formatos estruturados (PDF/CSV).
 * **11. Página de Logs / Auditoria (Admin Only):** Histórico detalhado e imutável de ações executadas na plataforma com filtros por utilizador, data e ação.
 * **12. Página de Configurações:** Parametrização global do sistema (IP do Broker MQTT, thresholds de humidade mínima, agendamentos cronometrados de rega e alertas de email).
-* **13. Página de Alertas:** Central visual de notificações críticas (ex: *Sensor offline*, *Humidade crítica*), organizadas por severidade e origem.
+* **13. Página de Alertas:** Central visual de notificações críticas, organizadas por severidade e origem.
 * **14. Página Histórico:** Motor de busca retroativo que unifica os dados passados de sensores, regas, fertilizações e tarefas num único local com filtros avançados.
 
 ---
@@ -95,34 +94,60 @@ A aplicação está estruturada em 14 ecrãs/componentes lógicos, desenhados pa
 ## 5. Arquitetura Técnica
 
 * **Frontend:** Interface Web Responsivo com gráficos dinâmicos integrados.
-* **Backend:** Php.
+* **Backend:** PHP.
 * **Mensajaria/IoT:** Protocolo MQTT com Broker Eclipse Mosquitto.
-* **Base de Dados:** Relacional (MySQL) para entidades e dados operacionais.
+* **Base de Dados:** Relacional (SQLite3) para entidades e dados operacionais.
 
+---
 
-Instruções para correr o site
-Instalar o software Tailscale (https://tailscale.com/download)
-Pedir acesso ao PI (Para adicionar ao tailscale)
-Instalar o python3 (https://www.python.org/downloads/release/python-3146/)
-Correr os seguintes comandos para instalar as bibliotecas
+## 6. Guia de Instalação e Execução
 
-pip install requests
-pip install paho-mqtt
+Siga os passos abaixo sequencialmente para configurar o ambiente local e executar os serviços necessários.
 
-Correr dois serviços, em separado, pela linha de comando (simuladorestufa2.py) e (gravador-telemetria.py)
+### Passo 1: Configuração de Rede e Dependências
+1. Descarregue e instale o [Tailscale](https://tailscale.com/download).
+2. Solicite a associação e autorização de acesso ao **Raspberry Pi** na rede Tailscale.
+3. Certifique-se de que tem o [Python 3](https://www.python.org/downloads/) instalado na sua máquina.
 
-Confirmar se o ip do pi está correcto nos scripts
-scripts/simuladorestufa2.py
-scripts/config.json
+### Passo 2: Instalação das Bibliotecas Python
+Abra o terminal (ou linha de comandos) e execute o seguinte comando para instalar as dependências de rede e comunicação IoT:
 
-Credenciais com user admin:
-user:admin@farmsmart.local
-password:admin123
+```bash
+pip install requests paho-mqtt
+```
 
-Credenciais com user gestor:
-user:1@gestor.teste
-password:123
+### Passo 3: Verificação de Configuração (IP do Pi)
+Antes de iniciar os scripts, verifique e confirme se o endereço IP do Raspberry Pi está devidamente mapeado e correto nos seguintes ficheiros do projeto:
+* `scripts/simuladorestufa2.py`
+* `scripts/config.json`
 
-Credenciais com user operario:
-user:1@operario.teste
-password:123
+### Passo 4: Execução dos Serviços IoT
+Deverá iniciar os seguintes serviços em **janelas de terminal separadas**:
+
+* **Terminal 1 (Simulador da Estufa):**
+  ```bash
+  python scripts/simuladorestufa2.py
+  ```
+
+* **Terminal 2 (Gravador de Telemetria na BD):**
+  ```bash
+  python scripts/gravador-telemetria.py
+  ```
+
+---
+
+## 7. Credenciais de Acesso de Teste
+
+Utilize os seguintes perfis pré-configurados para validar as permissões e dashboards do sistema:
+
+### Perfil: Administrador (Acesso Total)
+* **Utilizador:** `admin@farmsmart.local`
+* **Palavra-passe:** `admin123`
+
+### Perfil: Gestor Agrícola (Operação e Gestão)
+* **Utilizador:** `1@gestor.teste`
+* **Palavra-passe:** `123`
+
+### Perfil: Operário Agrícola (Trabalho de Campo)
+* **Utilizador:** `1@operario.teste`
+* **Palavra-passe:** `123`
