@@ -98,3 +98,31 @@ A aplicação está estruturada em 14 ecrãs/componentes lógicos, desenhados pa
 * **Backend:** Php.
 * **Mensajaria/IoT:** Protocolo MQTT com Broker Eclipse Mosquitto.
 * **Base de Dados:** Relacional (MySQL) para entidades e dados operacionais.
+
+
+Instruções para correr o site
+Instalar o software Tailscale (https://tailscale.com/download)
+Pedir acesso ao PI (Para adicionar ao tailscale)
+Instalar o python3 (https://www.python.org/downloads/release/python-3146/)
+Correr os seguintes comandos para instalar as bibliotecas
+
+pip install requests
+pip install paho-mqtt
+
+Correr dois serviços, em separado, pela linha de comando (simuladorestufa2.py) e (gravador-telemetria.py)
+
+Confirmar se o ip do pi está correcto nos scripts
+scripts/simuladorestufa2.py
+scripts/config.json
+
+Credenciais com user admin:
+user:admin@farmsmart.local
+password:admin123
+
+Credenciais com user gestor:
+user:1@gestor.teste
+password:123
+
+Credenciais com user operario:
+user:1@operario.teste
+password:123
